@@ -1,6 +1,6 @@
 # Deployment
 
-The project has been tested through a production-style deployment workflow on AWS EC2.
+Bird Platform uses an AWS EC2-hosted backend deployment to support cloud-based application services.
 
 ## Deployment work completed
 
@@ -11,11 +11,11 @@ The project has been tested through a production-style deployment workflow on AW
 - SQLite hosted on the VM
 - `systemd` service setup
 - live API checks from the mobile app
-- teardown and resource cleanup practice
+- operational teardown and resource cleanup
 
 ## Why this is useful
 
-This gives evidence of:
+This demonstrates:
 
 - practical cloud deployment skills
 - service lifecycle management

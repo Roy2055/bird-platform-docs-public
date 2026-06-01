@@ -8,7 +8,7 @@ This repository contains the public-facing architecture and product documentatio
 - Firebase
 - AWS
 
-It is intended as a portfolio and technical overview for recruiters, hiring managers, collaborators, and engineering stakeholders who want to understand how the platform is structured without exposing the full private implementation.
+It is intended as a public technical overview for recruiters, hiring managers, collaborators, and engineering stakeholders who want to understand how the platform is designed and delivered while the full source remains private.
 
 Suggested public repository name:
 

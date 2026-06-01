@@ -10,7 +10,7 @@ Bird Platform is a mobile bird identification and community product built to com
 - cloud-hosted backend services
 - ML-assisted bird recognition features
 
-This public docs site is a portfolio-friendly summary of the platform and its architecture.
+This public docs site provides an overview of the platform, its architecture, and its delivery approach.
 
 ## Core stack
 
@@ -18,7 +18,7 @@ This public docs site is a portfolio-friendly summary of the platform and its ar
 - **Backend:** FastAPI, Python
 - **Database:** SQLite
 - **Media:** Firebase Storage / signed URL resolution
-- **Cloud:** AWS EC2 deployment practice
+- **Cloud:** AWS EC2 deployment
 - **AI/ML:** TensorFlow/Keras-assisted recognition workflow
 
 ## What this public site covers
@@ -27,7 +27,7 @@ This public docs site is a portfolio-friendly summary of the platform and its ar
 - backend and frontend responsibilities
 - moderation and admin tooling
 - Firebase media lifecycle
-- production-style deployment practice
+- cloud deployment approach
 
 ## What is intentionally not included
 
