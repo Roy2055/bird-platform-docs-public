@@ -1,6 +1,6 @@
 # Product Overview
 
-Bird Platform is designed as a full-stack birdwatching product rather than a model demo.
+Bird Platform is a full-stack birdwatching product that combines identification, community participation, moderation, and cloud-backed application services.
 
 ## User-facing features
 
@@ -24,9 +24,9 @@ Bird Platform is designed as a full-stack birdwatching product rather than a mod
 - set default images and image order
 - manage song / call quality metadata
 
-## Why the project is useful as portfolio evidence
+## Platform capabilities
 
-It demonstrates:
+The platform brings together:
 
 - mobile product design
 - backend API design
@@ -34,5 +34,5 @@ It demonstrates:
 - moderation and safety workflows
 - Firebase integration
 - real-device testing
-- cloud deployment practice
+- cloud deployment and service operations
 - AI-assisted product capabilities

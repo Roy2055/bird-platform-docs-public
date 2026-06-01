@@ -37,7 +37,7 @@ flowchart TD
 
 ## Why this matters
 
-This demonstrates product thinking around:
+This supports:
 
 - user safety
 - auditable admin workflows
