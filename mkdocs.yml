@@ -1,0 +1,56 @@
+site_name: Bird Platform Public Docs
+site_description: Public architecture and product documentation for the Bird Platform mobile, backend, and admin ecosystem.
+site_author: Delroy Peters
+repo_name: bird-platform-docs-public
+repo_url: https://github.com/Roy2055/bird-platform-docs-public
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/bird
+
+nav:
+  - Home: index.md
+  - Product Overview: product-overview.md
+  - Architecture: architecture.md
+  - Backend: backend.md
+  - Frontend: frontend.md
+  - Moderation: moderation.md
+  - Firebase And Media: firebase-media.md
+  - Deployment: deployment.md
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences
+
+plugins:
+  - search
+  - mermaid2
