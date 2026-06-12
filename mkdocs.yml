@@ -38,6 +38,7 @@ nav:
   - Backend: backend.md
   - Frontend: frontend.md
   - Moderation: moderation.md
+  - Safety Workflow: safety-workflow.md
   - Firebase And Media: firebase-media.md
   - Deployment: deployment.md
 

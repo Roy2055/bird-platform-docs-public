@@ -13,33 +13,89 @@ Users can:
 - review moderation case updates
 - respond after a moderation decision has been made
 
-## Admin workflow
+## Safety And Ticketing Model
 
-Moderation cases move forward one step at a time:
+Bird Platform treats user safety actions as four distinct operational lanes rather than one generic queue:
 
-1. Report Received
-2. Ticket Created
-3. Priority Triage
-4. Moderator Review
-5. Policy Decision
-6. Enforcement Action
-7. Notification Sent
+- comment / complaint
+- report content
+- report user
+- block user
 
-```mermaid
-flowchart TD
-    A["Report Received"] --> B["Ticket Created"]
-    B --> C["Priority Triage"]
-    C --> D["Moderator Review"]
-    D --> E["Policy Decision"]
-    E --> F["Enforcement Action"]
-    F --> G["Notification Sent"]
-```
+Each lane has its own workflow, risk profile, and resolution model.
+
+![Social Media User Actions Overview](social-media-user-actions-overview.svg)
+
+[Open the interactive workflow page](safety-workflow.md)
+
+[Open the SVG directly](social-media-user-actions-overview.svg)
+
+## Flow Summary
+
+### Comment / complaint
+
+This is the support lane.
+
+- creates a support ticket
+- can be prioritised with sentiment analysis
+- requires a human response
+- stays open as a two-way conversation until the user is satisfied
+
+### Report content
+
+This is the content moderation lane.
+
+- creates a moderation ticket
+- severity is classified before human review
+- a moderator makes the decision
+- outcome is binary:
+  - action
+  - no action
+- both the reporter and the content author are notified
+
+In coding terms, this lane now stores explicit severity and outcome data rather than only free-text review notes.
+
+### Report user
+
+This is the trust and safety lane.
+
+- more serious than a single content report
+- reviews full account history and behavioural signals
+- supports escalating outcomes:
+  - warn
+  - temporary suspend
+  - permanent ban
+
+In coding terms, this lane now supports separate trust-and-safety action records and aggregated safety signals for the reported account.
+
+### Block user
+
+This is the self-serve safety lane.
+
+- immediate user action
+- no review queue
+- no human in the loop
+- no ticket required
+- block events are still logged as safety signals
+
+That means block events can still contribute to detecting repeated harmful behaviour even though the action itself is silent and immediate.
+
+## Enforcement And Resolution
+
+Red nodes in the workflow represent enforcement actions across the report flows.
+
+Teal nodes represent resolution states, including:
+
+- support conversation resolved
+- moderation case resolved
+- trust and safety case resolved
+- block state applied
 
 ## Why this matters
 
 This supports:
 
 - user safety
-- auditable admin workflows
-- separation between support messaging and moderation cases
+- clearer separation between support, moderation, trust and safety, and self-serve blocking
+- auditable admin workflows where human review is required
 - user-facing visibility into moderation outcomes

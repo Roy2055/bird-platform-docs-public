@@ -20,14 +20,20 @@ The frontend is built with Expo, React Native, TypeScript, and Expo Router.
 - keyboard-aware form handling
 - consistent theme support
 - support and moderation visibility inside the app
-- admin access through both mobile and browser-based tools
+- a clear split between end-user mobile flows and browser-based admin operations
 
 ## Separate admin web
 
 There is also a browser-based admin client for:
 
 - species media management
-- support-message review
-- moderation case management
+- support-ticket review
+- content moderation review
+- trust and safety review
 
-It is designed for desktop use and for local-network browser access from a phone during testing.
+It is designed as the primary admin surface.
+
+In coding terms:
+
+- the mobile app stays focused on end-user flows
+- the admin web handles operational support, moderation, and enforcement workflows

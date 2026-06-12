@@ -92,6 +92,20 @@ This repository is suitable for:
 - architecture and product walkthroughs
 - technical discussion around system design and delivery decisions
 
+## Build Docs Locally
+
+From the repository root:
+
+```bash
+uv run mkdocs build --strict
+```
+
+To preview locally:
+
+```bash
+uv run mkdocs serve
+```
+
 ## License
 
 Copyright © Delroy Peters. All rights reserved.

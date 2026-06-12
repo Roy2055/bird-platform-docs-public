@@ -12,7 +12,7 @@ flowchart LR
     API --> DB["SQLite"]
     API --> FirebaseAdmin["Firebase Admin / signed URLs"]
     AdminWeb["Admin Web"] --> API
-    AdminMobile["Admin Screens In App"] --> API
+    API --> Safety["Safety signals and trust actions"]
 ```
 
 ## Main design choices
@@ -21,5 +21,7 @@ flowchart LR
 - **SQLite-backed app database** for portability and simpler project operations
 - **Firebase Storage** for media handling and signed URL resolution
 - **Forward-only moderation workflow** for clear, auditable admin decisions
+- **Separate support, moderation, trust and safety, and block-user lanes** for clearer operational behavior
+- **Browser-based admin workspace** as the primary operational admin surface
 - **Expo / React Native** for a practical cross-platform mobile workflow
 - **FastAPI** for straightforward Python API delivery and integration
