@@ -37,3 +37,24 @@ In coding terms:
 
 - the mobile app stays focused on end-user flows
 - the admin web handles operational support, moderation, and enforcement workflows
+
+## Admin report workspace
+
+The browser-based admin client is designed to support a report-management workflow rather than just a list of forms.
+
+That workspace now maps moderation and trust-and-safety cases into:
+
+- pipeline-style stage columns
+- ticket cards with lane/type badges
+- queue-health summary metrics
+- searchable case lists
+- a selected-ticket detail panel with lifecycle timeline
+
+This keeps the visual model aligned with the underlying workflow:
+
+- report creation
+- triage
+- review
+- decision
+- enforcement
+- closure

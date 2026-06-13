@@ -68,6 +68,43 @@ This is the trust and safety lane.
 
 In coding terms, this lane now supports separate trust-and-safety action records and aggregated safety signals for the reported account.
 
+## Report management UI
+
+The moderation and trust-and-safety workflows are also reflected in a browser-based report-management interface.
+
+In product terms, that UI is designed around:
+
+- pipeline columns that reflect the case lifecycle:
+  - new
+  - triaging
+  - in review
+  - decision
+  - action
+  - closed
+- ticket cards with consistent type badges for:
+  - comment
+  - report content
+  - report user
+  - block
+- SLA-style queue health signals so moderators can quickly identify:
+  - healthy tickets
+  - at-risk tickets
+  - breached tickets
+- a detail panel that shows the selected case as a timeline through the workflow
+- multiple operator views such as:
+  - pipeline
+  - list
+  - analytics
+
+This matters because the workflow model is not only a backend concept. It is also a visible operational model for human moderators and reviewers.
+
+The intended behavior is stage-aware:
+
+- only the current actionable stage is shown while the case is in progress
+- future stages remain hidden until they become relevant
+- resolved cases collapse into a compact notification-and-history state
+- resolved cases can still be reopened when follow-up review is required
+
 ### Block user
 
 This is the self-serve safety lane.
