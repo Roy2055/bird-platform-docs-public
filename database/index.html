@@ -1,0 +1,5128 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production architecture, AI/ML, data, API, and mobile engineering documentation for Spark Birds.">
+      
+      
+        <meta name="author" content="Delroy Peters">
+      
+      
+        <link rel="canonical" href="https://roy2055.github.io/bird-platform-docs-public/database/">
+      
+      
+        <link rel="prev" href="../api/uploads/">
+      
+      
+        <link rel="next" href="../setup/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Database Schema - Spark Birds Technical Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#database-schema" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spark Birds Technical Documentation" class="md-header__button md-logo" aria-label="Spark Birds Technical Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 11.5-3.05-1.13c-.26-1.15-.91-1.81-.91-1.81a4.19 4.19 0 0 0-5.93 0l-1.48 1.48L5 3c-1 4 0 8 2.45 11.22L2 19.5s8.89 2 14.07-2.05c2.76-2.16 3.38-3.42 3.77-4.75zm-5.29.22c-.39.39-1.03.39-1.42 0a.996.996 0 0 1 0-1.41c.39-.39 1.03-.39 1.42 0s.39 1.02 0 1.41"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spark Birds Technical Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Database Schema
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../rag-pipeline/" class="md-tabs__link">
+          
+  
+  
+  AI And Machine Learning
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../frontend/" class="md-tabs__link">
+          
+  
+  
+  Product Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Data
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../setup/" class="md-tabs__link">
+          
+  
+  
+  Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spark Birds Technical Documentation" class="md-nav__button md-logo" aria-label="Spark Birds Technical Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 11.5-3.05-1.13c-.26-1.15-.91-1.81-.91-1.81a4.19 4.19 0 0 0-5.93 0l-1.48 1.48L5 3c-1 4 0 8 2.45 11.22L2 19.5s8.89 2 14.07-2.05c2.76-2.16 3.38-3.42 3.77-4.75zm-5.29.22c-.39.39-1.03.39-1.42 0a.996.996 0 0 1 0-1.41c.39-.39 1.03-.39 1.42 0s.39 1.02 0 1.41"/></svg>
+
+    </a>
+    Spark Birds Technical Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-highlights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Highlights
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../public-docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Documentation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../production-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nearby-bird-alerts-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nearby Bird Alerts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moderation-process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moderation Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI And Machine Learning
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI And Machine Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Q&A RAG Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifacts-embeddings-and-classification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artifacts, Embeddings, And Classification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bird-data-collection-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Data Collection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-ingestion-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sound-ingestion-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Ingestion And Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sound-training-curation-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Training Curation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bird-likelihood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contextual Bird Likelihood
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Product Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin Web
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-navigation-and-core-screens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Navigation And Core Screens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-bird-detail-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Bird Detail View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-prediction-create-and-update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Prediction Create And Update
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-analytics-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Analytics And Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-colors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Colors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/predictions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Predictions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bird-species/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Species
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/uploads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uploads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#schema-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_detail
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="bird_detail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#important-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predictions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#likelihood-and-ebd-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Likelihood And EBD Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Likelihood And EBD Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ebird_observations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ebird_observations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ebd_observations_raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ebd_observations_raw
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bird_likelihood_training_examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_likelihood_training_examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bird_likelihood_models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_likelihood_models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nearby-alert-delivery-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearby Alert Delivery Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nearby Alert Delivery Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#notification_outbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        notification_outbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-bird-contribution-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community Bird Contribution Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Community Bird Contribution Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bird_community_details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_community_details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community_bird_images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_bird_images
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_prediction_ratings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_prediction_ratings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_prediction_reactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_prediction_reactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_prediction_comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_prediction_comments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_feedback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_feedback_messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_feedback_messages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust_safety_actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trust_safety_actions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_safety_signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_safety_signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_rag_embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_rag_embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_local_semantic_embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_local_semantic_embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_sound_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_sound_sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_sound_ingestion_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_sound_ingestion_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#promotions-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Promotions Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Promotions Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#promotions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        promotions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_promotion_state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_promotion_state
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#admin-support-and-governance-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin, Support, And Governance Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Admin, Support, And Governance Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user_feedback_status_history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_feedback_status_history
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#site_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        site_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#report_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        report_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sla_policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sla_policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalation_rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        escalation_rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        audit_log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationships
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-management-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image Management Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#media-path-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media Path Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-read-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Read Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-data-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community Data Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird-qa-source-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bird Q&amp;A Source Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commit Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#schema-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Schema Layers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#users" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        users
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_detail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_detail
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="bird_detail">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#important-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#predictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        predictions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#likelihood-and-ebd-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Likelihood And EBD Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Likelihood And EBD Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ebird_observations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ebird_observations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ebd_observations_raw" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ebd_observations_raw
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bird_likelihood_training_examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_likelihood_training_examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bird_likelihood_models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_likelihood_models
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#nearby-alert-delivery-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearby Alert Delivery Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nearby Alert Delivery Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#notification_outbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        notification_outbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-bird-contribution-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community Bird Contribution Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Community Bird Contribution Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bird_community_details" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_community_details
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community_bird_images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_bird_images
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_prediction_ratings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_prediction_ratings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_prediction_reactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_prediction_reactions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_prediction_comments" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_prediction_comments
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community_reports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        community_reports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_blocks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_feedback
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_feedback_messages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_feedback_messages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust_safety_actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        trust_safety_actions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#user_safety_signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_safety_signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_rag_embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_rag_embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_local_semantic_embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_local_semantic_embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_sound_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_sound_sources
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird_species_sound_ingestion_status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_sound_ingestion_status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#promotions-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Promotions Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Promotions Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#promotions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        promotions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_promotion_state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_promotion_state
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#admin-support-and-governance-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Admin, Support, And Governance Tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Admin, Support, And Governance Tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user_feedback_status_history" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_feedback_status_history
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#site_config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        site_config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#report_type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        report_type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sla_policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sla_policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#escalation_rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        escalation_rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#audit_log" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        audit_log
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Relationships
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#image-management-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image Management Model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#media-path-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media Path Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-read-behavior" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Read Behavior
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-data-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community Data Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bird-qa-source-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bird Q&amp;A Source Data
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="database-schema">Database Schema<a class="headerlink" href="#database-schema" title="Permanent link">&para;</a></h1>
+<p>This project keeps its primary application database in PostgreSQL.</p>
+<p>The production backend connects through <code>DATABASE_URL</code>, and the tables described here represent the application schema used by the API.</p>
+<p>The current Postgres application tables are:</p>
+<ul>
+<li><code>users</code></li>
+<li><code>bird_species</code></li>
+<li><code>predictions</code></li>
+<li><code>ebird_observations</code></li>
+<li><code>ebd_observations_raw</code></li>
+<li><code>bird_likelihood_training_examples</code></li>
+<li><code>bird_likelihood_models</code></li>
+<li><code>bird_community_details</code></li>
+<li><code>bird_detail</code></li>
+<li><code>community_bird_images</code></li>
+<li><code>community_prediction_ratings</code></li>
+<li><code>community_prediction_reactions</code></li>
+<li><code>community_prediction_comments</code></li>
+<li><code>community_reports</code></li>
+<li><code>user_blocks</code></li>
+<li><code>trust_safety_actions</code></li>
+<li><code>user_safety_signals</code></li>
+<li><code>user_feedback</code></li>
+<li><code>user_feedback_messages</code></li>
+<li><code>user_feedback_status_history</code></li>
+<li><code>bird_species_rag_embeddings</code></li>
+<li><code>bird_species_local_semantic_embeddings</code></li>
+<li><code>bird_species_sound_sources</code></li>
+<li><code>bird_species_sound_ingestion_status</code></li>
+<li><code>promotions</code></li>
+<li><code>user_promotion_state</code></li>
+<li><code>site_config</code></li>
+<li><code>report_type</code></li>
+<li><code>sla_policy</code></li>
+<li><code>escalation_rule</code></li>
+<li><code>audit_log</code></li>
+</ul>
+<h2 id="schema-layers">Schema Layers<a class="headerlink" href="#schema-layers" title="Permanent link">&para;</a></h2>
+<p>The schema falls into a few functional layers:</p>
+<ul>
+<li><strong>Core app data</strong>: <code>users</code>, <code>bird_species</code>, <code>predictions</code>, <code>bird_detail</code></li>
+<li><strong>Community and moderation</strong>: <code>community_*</code>, <code>user_blocks</code>, <code>trust_safety_actions</code>, <code>user_safety_signals</code></li>
+<li><strong>Support and admin operations</strong>: <code>user_feedback*</code>, <code>site_config</code>, <code>report_type</code>, <code>sla_policy</code>, <code>escalation_rule</code>, <code>audit_log</code></li>
+<li><strong>Media and retrieval</strong>: <code>bird_species_sound_*</code>, <code>bird_species_rag_embeddings</code>, <code>bird_species_local_semantic_embeddings</code></li>
+<li><strong>Promotions</strong>: <code>promotions</code>, <code>user_promotion_state</code></li>
+<li><strong>Nearby alerts</strong>: per-user scheduling fields, channel preferences, <code>user_seen_species</code>, and <code>notification_outbox</code></li>
+<li><strong>Likelihood / EBD / ML</strong>: <code>ebird_observations</code>, <code>ebd_observations_raw</code>, <code>bird_likelihood_training_examples</code>, <code>bird_likelihood_models</code></li>
+</ul>
+<h2 id="users"><code>users</code><a class="headerlink" href="#users" title="Permanent link">&para;</a></h2>
+<p><code>users</code> is the account table for authenticated, guest, and admin users.</p>
+<p>It is referenced throughout the app by predictions, community actions, support flows, moderation, and promotions.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>username</code></td>
+<td>TEXT</td>
+<td>Unique username</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>TEXT</td>
+<td>Unique account email</td>
+</tr>
+<tr>
+<td><code>firebase_uid</code></td>
+<td>TEXT</td>
+<td>Linked Firebase Auth user id</td>
+</tr>
+<tr>
+<td><code>display_name</code></td>
+<td>TEXT</td>
+<td>Public display name</td>
+</tr>
+<tr>
+<td><code>avatar_url</code></td>
+<td>TEXT</td>
+<td>Avatar image URL</td>
+</tr>
+<tr>
+<td><code>bio</code></td>
+<td>TEXT</td>
+<td>Optional profile bio</td>
+</tr>
+<tr>
+<td><code>password_hash</code></td>
+<td>TEXT</td>
+<td>Local password hash if using local auth</td>
+</tr>
+<tr>
+<td><code>auth_provider</code></td>
+<td>TEXT</td>
+<td>Auth source such as <code>local</code> or Firebase-backed flows</td>
+</tr>
+<tr>
+<td><code>provider_subject</code></td>
+<td>TEXT</td>
+<td>Upstream provider subject</td>
+</tr>
+<tr>
+<td><code>role</code></td>
+<td>TEXT</td>
+<td>Role such as <code>user</code> or <code>admin</code></td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> account activation flag</td>
+</tr>
+<tr>
+<td><code>is_guest</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> guest-account flag</td>
+</tr>
+<tr>
+<td><code>email_verified</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> verification flag</td>
+</tr>
+<tr>
+<td><code>push_notifications_enabled</code></td>
+<td>BOOLEAN</td>
+<td>Whether nearby-alert push delivery is enabled</td>
+</tr>
+<tr>
+<td><code>email_notifications_enabled</code></td>
+<td>BOOLEAN</td>
+<td>Whether nearby-alert email delivery is enabled</td>
+</tr>
+<tr>
+<td><code>last_login_at</code></td>
+<td>TEXT</td>
+<td>Last login timestamp</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bird_species"><code>bird_species</code><a class="headerlink" href="#bird_species" title="Permanent link">&para;</a></h2>
+<p><code>bird_species</code> stores the canonical species record and the currently selected default media pointers.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>common_name</code></td>
+<td>TEXT</td>
+<td>Common bird name</td>
+</tr>
+<tr>
+<td><code>scientific_name</code></td>
+<td>TEXT</td>
+<td>Scientific name</td>
+</tr>
+<tr>
+<td><code>family</code></td>
+<td>TEXT</td>
+<td>Bird family</td>
+</tr>
+<tr>
+<td><code>order_name</code></td>
+<td>TEXT</td>
+<td>Bird order</td>
+</tr>
+<tr>
+<td><code>habitat</code></td>
+<td>TEXT</td>
+<td>Habitat summary</td>
+</tr>
+<tr>
+<td><code>diet</code></td>
+<td>TEXT</td>
+<td>Diet summary</td>
+</tr>
+<tr>
+<td><code>seasonal_diet</code></td>
+<td>TEXT</td>
+<td>Seasonal diet changes across the year</td>
+</tr>
+<tr>
+<td><code>social_structure</code></td>
+<td>TEXT</td>
+<td>Flocking, territorial, pair, colony, or solitary behavior</td>
+</tr>
+<tr>
+<td><code>foraging_behaviour</code></td>
+<td>TEXT</td>
+<td>How the species searches for or captures food</td>
+</tr>
+<tr>
+<td><code>breeding_plumage</code></td>
+<td>TEXT</td>
+<td>Breeding-season plumage notes</td>
+</tr>
+<tr>
+<td><code>notable_features</code></td>
+<td>TEXT</td>
+<td>Distinctive identifying or behavioral features</td>
+</tr>
+<tr>
+<td><code>distribution</code></td>
+<td>TEXT</td>
+<td>Geographic range or regional distribution summary</td>
+</tr>
+<tr>
+<td><code>climate_zones</code></td>
+<td>TEXT</td>
+<td>Main climate zones the species occupies</td>
+</tr>
+<tr>
+<td><code>breeding_season</code></td>
+<td>TEXT</td>
+<td>Typical breeding period</td>
+</tr>
+<tr>
+<td><code>courtship_rituals</code></td>
+<td>TEXT</td>
+<td>Courtship or display behavior</td>
+</tr>
+<tr>
+<td><code>nest_type</code></td>
+<td>TEXT</td>
+<td>Nest form or location</td>
+</tr>
+<tr>
+<td><code>nest_materials</code></td>
+<td>TEXT</td>
+<td>Primary nesting materials</td>
+</tr>
+<tr>
+<td><code>parental_care</code></td>
+<td>TEXT</td>
+<td>Incubation, brooding, and care behavior</td>
+</tr>
+<tr>
+<td><code>fledging_period</code></td>
+<td>TEXT</td>
+<td>Typical fledging window</td>
+</tr>
+<tr>
+<td><code>clutch_size</code></td>
+<td>TEXT</td>
+<td>Typical eggs per brood</td>
+</tr>
+<tr>
+<td><code>interesting_facts</code></td>
+<td>TEXT</td>
+<td>Free-form species facts</td>
+</tr>
+<tr>
+<td><code>frequently_asked_questions</code></td>
+<td>TEXT</td>
+<td>FAQ-style species notes or canned Q&amp;A text</td>
+</tr>
+<tr>
+<td><code>size_cm</code></td>
+<td>TEXT</td>
+<td>Size metadata</td>
+</tr>
+<tr>
+<td><code>wingspan_cm</code></td>
+<td>TEXT</td>
+<td>Wingspan metadata</td>
+</tr>
+<tr>
+<td><code>weight_g</code></td>
+<td>TEXT</td>
+<td>Weight metadata</td>
+</tr>
+<tr>
+<td><code>plumage_description</code></td>
+<td>TEXT</td>
+<td>Overall plumage description</td>
+</tr>
+<tr>
+<td><code>male_description</code></td>
+<td>TEXT</td>
+<td>Male-specific description</td>
+</tr>
+<tr>
+<td><code>female_description</code></td>
+<td>TEXT</td>
+<td>Female-specific description</td>
+</tr>
+<tr>
+<td><code>juvenile_description</code></td>
+<td>TEXT</td>
+<td>Juvenile-specific description</td>
+</tr>
+<tr>
+<td><code>beak_shape</code></td>
+<td>TEXT</td>
+<td>Beak metadata</td>
+</tr>
+<tr>
+<td><code>leg_color</code></td>
+<td>TEXT</td>
+<td>Leg color metadata</td>
+</tr>
+<tr>
+<td><code>conservation_status</code></td>
+<td>TEXT</td>
+<td>Conservation status</td>
+</tr>
+<tr>
+<td><code>migration_pattern</code></td>
+<td>TEXT</td>
+<td>Migration summary</td>
+</tr>
+<tr>
+<td><code>song_description</code></td>
+<td>TEXT</td>
+<td>Song description</td>
+</tr>
+<tr>
+<td><code>call_description</code></td>
+<td>TEXT</td>
+<td>Call description</td>
+</tr>
+<tr>
+<td><code>behavior</code></td>
+<td>TEXT</td>
+<td>Behavior summary</td>
+</tr>
+<tr>
+<td><code>lifespan_years</code></td>
+<td>TEXT</td>
+<td>Lifespan metadata</td>
+</tr>
+<tr>
+<td><code>default_image_url</code></td>
+<td>TEXT</td>
+<td>Selected default species image storage path, usually <code>species/...</code></td>
+</tr>
+<tr>
+<td><code>song_audio_url</code></td>
+<td>TEXT</td>
+<td>Canonical species song storage path</td>
+</tr>
+<tr>
+<td><code>call_audio_url</code></td>
+<td>TEXT</td>
+<td>Canonical species call storage path</td>
+</tr>
+<tr>
+<td><code>song_audio_quality</code></td>
+<td>TEXT</td>
+<td>Canonical song quality grade, typically <code>A-E</code></td>
+</tr>
+<tr>
+<td><code>call_audio_quality</code></td>
+<td>TEXT</td>
+<td>Canonical call quality grade, typically <code>A-E</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="bird_detail"><code>bird_detail</code><a class="headerlink" href="#bird_detail" title="Permanent link">&para;</a></h2>
+<p><code>bird_detail</code> now acts as the ordered species image gallery table.</p>
+<p>This is the source of truth for all admin-managed species images.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>bird_species_id</code></td>
+<td>INTEGER</td>
+<td>Foreign key to <code>bird_species</code></td>
+</tr>
+<tr>
+<td><code>image_url</code></td>
+<td>TEXT</td>
+<td>Species image storage path, usually <code>species/...</code></td>
+</tr>
+<tr>
+<td><code>song_audio_url</code></td>
+<td>TEXT</td>
+<td>Legacy/unused extra media column still present in schema</td>
+</tr>
+<tr>
+<td><code>display_order</code></td>
+<td>INTEGER</td>
+<td>Gallery order for the species, lower values shown first</td>
+</tr>
+<tr>
+<td><code>image_quality</code></td>
+<td>INTEGER</td>
+<td>Training/display usefulness score used by gallery and training tools</td>
+</tr>
+<tr>
+<td><code>source_name</code></td>
+<td>TEXT</td>
+<td>Upstream image source such as <code>avicommons</code>, <code>wikimedia-commons</code>, <code>dropbox</code>, or <code>synced-gallery</code></td>
+</tr>
+<tr>
+<td><code>source_record_id</code></td>
+<td>TEXT</td>
+<td>Source-specific identifier such as an Avicommons <code>code:key</code> pair or a filename/title</td>
+</tr>
+<tr>
+<td><code>managed_by</code></td>
+<td>TEXT</td>
+<td>Owning automation for refreshable gallery rows</td>
+</tr>
+<tr>
+<td><code>managed_rank</code></td>
+<td>INTEGER</td>
+<td>Intended order inside a managed gallery block</td>
+</tr>
+<tr>
+<td><code>is_managed</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> flag indicating whether automation owns the row lifecycle</td>
+</tr>
+</tbody>
+</table>
+<h3 id="important-rule">Important rule<a class="headerlink" href="#important-rule" title="Permanent link">&para;</a></h3>
+<p>For each species:</p>
+<ul>
+<li>the selected <code>bird_species.default_image_url</code> should also exist as one of that species’s <code>bird_detail.image_url</code> rows</li>
+<li>admin reordering is stored in <code>bird_detail.display_order</code></li>
+<li>backend reads gallery images with:</li>
+<li><code>ORDER BY display_order ASC, id ASC</code></li>
+<li>current Avicommons gallery refreshes mark their rows with:</li>
+<li><code>managed_by = 'download_avicommons_thumbnails'</code></li>
+<li><code>is_managed = 1</code></li>
+<li><code>managed_rank = 1..N</code></li>
+<li>stale managed thumbnail rows are currently demoted to the end of the gallery instead of being deleted</li>
+</ul>
+<p>That means:</p>
+<ul>
+<li><code>bird_species.default_image_url</code> is the chosen default image pointer</li>
+<li><code>bird_detail</code> is the ordered gallery</li>
+<li><code>bird_detail</code> also carries provenance and management metadata for gallery refresh tooling</li>
+</ul>
+<h2 id="predictions"><code>predictions</code><a class="headerlink" href="#predictions" title="Permanent link">&para;</a></h2>
+<p><code>predictions</code> stores user-created bird observations and their uploaded media.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>bird_species_id</code></td>
+<td>INTEGER</td>
+<td>Foreign key to <code>bird_species</code></td>
+</tr>
+<tr>
+<td><code>prediction_type</code></td>
+<td>TEXT</td>
+<td>Manual / AI-assisted</td>
+</tr>
+<tr>
+<td><code>confidence</code></td>
+<td>REAL</td>
+<td>Confidence value</td>
+</tr>
+<tr>
+<td><code>sound_length</code></td>
+<td>REAL</td>
+<td>Optional audio duration</td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>TEXT</td>
+<td>Free-text location</td>
+</tr>
+<tr>
+<td><code>latitude</code></td>
+<td>REAL</td>
+<td>Optional latitude</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>REAL</td>
+<td>Optional longitude</td>
+</tr>
+<tr>
+<td><code>detected_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>image_url</code></td>
+<td>TEXT</td>
+<td>Uploaded customer image, usually a <code>predictions/...</code> storage path or an already-signed cloud URL</td>
+</tr>
+<tr>
+<td><code>audio_url</code></td>
+<td>TEXT</td>
+<td>Uploaded customer audio, usually a <code>predictions/...</code> storage path or an already-signed cloud URL</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>TEXT</td>
+<td>Notes and number-seen text</td>
+</tr>
+<tr>
+<td><code>shared_to_community</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> flag indicating whether the prediction is visible in Community</td>
+</tr>
+<tr>
+<td><code>community_shared_at</code></td>
+<td>TEXT</td>
+<td>Timestamp for first community share</td>
+</tr>
+</tbody>
+</table>
+<h2 id="likelihood-and-ebd-tables">Likelihood And EBD Tables<a class="headerlink" href="#likelihood-and-ebd-tables" title="Permanent link">&para;</a></h2>
+<p>These tables support the bird-likelihood pipeline and the additive EBD import path.</p>
+<p>They are intentionally separate because they serve different jobs:</p>
+<ul>
+<li><code>ebird_observations</code> is the compact runtime evidence store used by the app</li>
+<li><code>ebd_observations_raw</code> is the richer near-raw landing table for bulk EBD extracts</li>
+<li><code>bird_likelihood_training_examples</code> is the materialized ML-ready feature/label table</li>
+<li><code>bird_likelihood_models</code> is the model registry</li>
+</ul>
+<h3 id="ebird_observations"><code>ebird_observations</code><a class="headerlink" href="#ebird_observations" title="Permanent link">&para;</a></h3>
+<p><code>ebird_observations</code> is the compact historical bird-evidence table used by likelihood scoring and related product lookups.</p>
+<p>This is the operational table the live app can query safely at serving time.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>species_code</code></td>
+<td>TEXT</td>
+<td>eBird species code</td>
+</tr>
+<tr>
+<td><code>common_name</code></td>
+<td>TEXT</td>
+<td>Common bird name</td>
+</tr>
+<tr>
+<td><code>scientific_name</code></td>
+<td>TEXT</td>
+<td>Scientific name</td>
+</tr>
+<tr>
+<td><code>observation_date</code></td>
+<td>DATE</td>
+<td>Observation date</td>
+</tr>
+<tr>
+<td><code>latitude</code></td>
+<td>REAL</td>
+<td>Observation latitude</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>REAL</td>
+<td>Observation longitude</td>
+</tr>
+<tr>
+<td><code>location_name</code></td>
+<td>TEXT</td>
+<td>Free-text location label</td>
+</tr>
+<tr>
+<td><code>observation_count</code></td>
+<td>TEXT</td>
+<td>Count text from source row</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>TEXT</td>
+<td>Evidence source, default <code>ebird</code></td>
+</tr>
+<tr>
+<td><code>imported_at</code></td>
+<td>TEXT</td>
+<td>Import timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Used for:</p>
+<ul>
+<li>live <code>bird-likelihood</code> evidence lookup</li>
+<li>recent historical density and recency features</li>
+<li>compact serving-time bird occurrence context</li>
+</ul>
+<h3 id="ebd_observations_raw"><code>ebd_observations_raw</code><a class="headerlink" href="#ebd_observations_raw" title="Permanent link">&para;</a></h3>
+<p><code>ebd_observations_raw</code> is the additive near-raw monthly EBD landing table.</p>
+<p>This table preserves checklist/event metadata that would be too heavy or too detailed for the compact runtime table.</p>
+<p>It is primarily a staging, analytics, and offline-ML source table.</p>
+<table>
+<thead>
+<tr>
+<th>Column group</th>
+<th>Examples</th>
+<th>What it is used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bird identity</td>
+<td><code>taxon_concept_id</code>, <code>common_name</code>, <code>scientific_name</code>, subspecies columns</td>
+<td>Species identity and taxonomy joins</td>
+</tr>
+<tr>
+<td>Count / breeding / behavior</td>
+<td><code>observation_count_text</code>, <code>observation_count</code>, <code>breeding_code</code>, <code>behavior_code</code>, <code>age_sex</code></td>
+<td>Richer ecological and training features</td>
+</tr>
+<tr>
+<td>Geography</td>
+<td><code>country</code>, <code>state</code>, <code>county</code>, <code>iba_code</code>, <code>bcr_code</code>, <code>locality</code>, <code>latitude</code>, <code>longitude</code></td>
+<td>Spatial filtering and feature engineering</td>
+</tr>
+<tr>
+<td>Checklist metadata</td>
+<td><code>sampling_event_identifier</code>, <code>protocol_name</code>, <code>duration_minutes</code>, <code>effort_distance_km</code>, <code>number_observers</code>, <code>all_species_reported</code></td>
+<td>Complete-checklist negatives and effort-aware modeling</td>
+</tr>
+<tr>
+<td>Moderation / quality</td>
+<td><code>approved</code>, <code>reviewed</code>, <code>reason</code></td>
+<td>Filtering to trustworthy rows</td>
+</tr>
+<tr>
+<td>Comments / payload</td>
+<td><code>checklist_comments</code>, <code>species_comments</code>, <code>raw_payload_json</code></td>
+<td>Forensics, debugging, and future feature extraction</td>
+</tr>
+<tr>
+<td>Import lineage</td>
+<td><code>source_file</code>, <code>source_line_number</code>, <code>imported_at</code></td>
+<td>Traceability and reruns</td>
+</tr>
+</tbody>
+</table>
+<p>Important columns:</p>
+<ul>
+<li><code>global_unique_identifier</code> uniquely identifies the raw row</li>
+<li><code>all_species_reported</code> tells us whether the checklist was complete</li>
+<li><code>sampling_event_identifier</code> groups rows by checklist/event</li>
+<li><code>approved</code> and <code>reviewed</code> help filter lower-trust records</li>
+</ul>
+<p>Used for:</p>
+<ul>
+<li>bulk EBD import storage</li>
+<li>offline analytics</li>
+<li>Stage 3 feature generation</li>
+<li>checklist-aware negative example generation</li>
+<li>re-materializing compact <code>ebird_observations</code></li>
+</ul>
+<h3 id="bird_likelihood_training_examples"><code>bird_likelihood_training_examples</code><a class="headerlink" href="#bird_likelihood_training_examples" title="Permanent link">&para;</a></h3>
+<p><code>bird_likelihood_training_examples</code> stores materialized supervised-learning rows for Stage 3 bird-likelihood modeling.</p>
+<p>Each row is an ML-ready example rather than a raw observation row.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>source_observation_id</code></td>
+<td>INTEGER</td>
+<td>Linked compact source observation when available</td>
+</tr>
+<tr>
+<td><code>species_id</code></td>
+<td>INTEGER</td>
+<td>Foreign key to <code>bird_species</code></td>
+</tr>
+<tr>
+<td><code>example_key</code></td>
+<td>TEXT</td>
+<td>Unique training example id</td>
+</tr>
+<tr>
+<td><code>label_present</code></td>
+<td>INTEGER</td>
+<td>Supervised target, <code>1</code> present or <code>0</code> absent</td>
+</tr>
+<tr>
+<td><code>split_bucket</code></td>
+<td>TEXT</td>
+<td>Dataset split such as <code>train</code>, <code>validation</code>, or <code>test</code></td>
+</tr>
+<tr>
+<td><code>feature_version</code></td>
+<td>TEXT</td>
+<td>Feature-set version</td>
+</tr>
+<tr>
+<td><code>species_name</code></td>
+<td>TEXT</td>
+<td>Species label text</td>
+</tr>
+<tr>
+<td><code>observation_date</code></td>
+<td>TEXT</td>
+<td>Effective example date</td>
+</tr>
+<tr>
+<td><code>latitude</code></td>
+<td>REAL</td>
+<td>Feature latitude</td>
+</tr>
+<tr>
+<td><code>longitude</code></td>
+<td>REAL</td>
+<td>Feature longitude</td>
+</tr>
+<tr>
+<td><code>radius_km</code></td>
+<td>REAL</td>
+<td>Spatial aggregation radius</td>
+</tr>
+<tr>
+<td><code>lookback_days</code></td>
+<td>INTEGER</td>
+<td>Main lookback window</td>
+</tr>
+<tr>
+<td><code>recent_window_days</code></td>
+<td>INTEGER</td>
+<td>Recent evidence window</td>
+</tr>
+<tr>
+<td><code>historical_lookback_days</code></td>
+<td>INTEGER</td>
+<td>Long historical window</td>
+</tr>
+<tr>
+<td><code>ebird_sightings_count</code></td>
+<td>INTEGER</td>
+<td>Compact eBird evidence count</td>
+</tr>
+<tr>
+<td><code>community_sightings_count</code></td>
+<td>INTEGER</td>
+<td>Community evidence count</td>
+</tr>
+<tr>
+<td><code>user_sightings_count</code></td>
+<td>INTEGER</td>
+<td>User-specific evidence count</td>
+</tr>
+<tr>
+<td><code>recent_sightings_count</code></td>
+<td>INTEGER</td>
+<td>Recent sightings count</td>
+</tr>
+<tr>
+<td><code>nearest_sighting_km</code></td>
+<td>REAL</td>
+<td>Distance to nearest matching sighting</td>
+</tr>
+<tr>
+<td><code>last_seen_days_ago</code></td>
+<td>INTEGER</td>
+<td>Days since last matching sighting</td>
+</tr>
+<tr>
+<td><code>historical_month_matches</code></td>
+<td>INTEGER</td>
+<td>Same-season evidence count</td>
+</tr>
+<tr>
+<td><code>historical_total_matches</code></td>
+<td>INTEGER</td>
+<td>All-history evidence count</td>
+</tr>
+<tr>
+<td><code>season_score</code></td>
+<td>INTEGER</td>
+<td>Seasonal score</td>
+</tr>
+<tr>
+<td>Probability feature columns</td>
+<td>REAL</td>
+<td>Precomputed feature probabilities such as <code>recent_probability</code>, <code>distance_probability</code>, <code>season_probability</code></td>
+</tr>
+<tr>
+<td><code>metadata_json</code></td>
+<td>TEXT</td>
+<td>Structured provenance and feature metadata</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Used for:</p>
+<ul>
+<li>Stage 3 classifier training</li>
+<li>evaluation / offline validation</li>
+<li>model reproducibility by <code>feature_version</code></li>
+<li>checklist-aware positive/negative example materialization</li>
+</ul>
+<p>For complete-checklist feature contracts, checklist identity is retained in
+the metadata payload. Deterministic sampling selects whole checklist events,
+and resumable backfills treat the presence of an already committed checklist
+identifier as a durable completion checkpoint.</p>
+<p>The newer hard-negative contract records both its sampling contract and the
+selected ecological stratum. Candidate selection rotates deterministically
+across:</p>
+<ul>
+<li>recent local presence;</li>
+<li>historical local presence in the same season;</li>
+<li>historical regional presence in the same season.</li>
+</ul>
+<p>This produces more informative negative examples than arbitrary absent
+species while preserving reproducibility across reruns.</p>
+<h3 id="bird_likelihood_models"><code>bird_likelihood_models</code><a class="headerlink" href="#bird_likelihood_models" title="Permanent link">&para;</a></h3>
+<p><code>bird_likelihood_models</code> is the Stage 3 model registry.</p>
+<p>It stores metadata about trained models and their artifacts rather than the raw training data itself.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>model_key</code></td>
+<td>TEXT</td>
+<td>Unique model identifier</td>
+</tr>
+<tr>
+<td><code>model_stage</code></td>
+<td>TEXT</td>
+<td>Stage label, default <code>stage_3_ml</code></td>
+</tr>
+<tr>
+<td><code>feature_version</code></td>
+<td>TEXT</td>
+<td>Feature-set version the model was trained on</td>
+</tr>
+<tr>
+<td><code>algorithm</code></td>
+<td>TEXT</td>
+<td>Model family such as gradient boosting or logistic regression</td>
+</tr>
+<tr>
+<td><code>model_version</code></td>
+<td>TEXT</td>
+<td>Human/model build version</td>
+</tr>
+<tr>
+<td><code>artifact_path</code></td>
+<td>TEXT</td>
+<td>Path to persisted model artifact</td>
+</tr>
+<tr>
+<td><code>training_started_at</code></td>
+<td>TEXT</td>
+<td>Training start timestamp</td>
+</tr>
+<tr>
+<td><code>trained_at</code></td>
+<td>TEXT</td>
+<td>Training completion timestamp</td>
+</tr>
+<tr>
+<td><code>metrics_json</code></td>
+<td>TEXT</td>
+<td>Serialized evaluation metrics</td>
+</tr>
+<tr>
+<td><code>params_json</code></td>
+<td>TEXT</td>
+<td>Serialized hyperparameters</td>
+</tr>
+<tr>
+<td><code>training_row_count</code></td>
+<td>INTEGER</td>
+<td>Number of training rows used</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> active model flag</td>
+</tr>
+<tr>
+<td><code>notes</code></td>
+<td>TEXT</td>
+<td>Free-form notes</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Used for:</p>
+<ul>
+<li>model artifact registration</li>
+<li>activation / rollback of trained models</li>
+<li>offline experiment tracking</li>
+<li>evaluation-history auditability</li>
+</ul>
+<h2 id="nearby-alert-delivery-tables">Nearby Alert Delivery Tables<a class="headerlink" href="#nearby-alert-delivery-tables" title="Permanent link">&para;</a></h2>
+<h3 id="notification_outbox"><code>notification_outbox</code><a class="headerlink" href="#notification_outbox" title="Permanent link">&para;</a></h3>
+<p><code>notification_outbox</code> stores durable nearby-alert email work separately from
+species-discovery state.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>BIGINT</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>BIGINT</td>
+<td>Recipient account</td>
+</tr>
+<tr>
+<td><code>channel</code></td>
+<td>TEXT</td>
+<td>Delivery channel, currently used for durable email work</td>
+</tr>
+<tr>
+<td><code>destination</code></td>
+<td>TEXT</td>
+<td>Destination captured for the delivery attempt</td>
+</tr>
+<tr>
+<td><code>event_type</code></td>
+<td>TEXT</td>
+<td>Notification event classification</td>
+</tr>
+<tr>
+<td><code>deduplication_key</code></td>
+<td>TEXT</td>
+<td>Unique content-derived key preventing duplicate enqueueing</td>
+</tr>
+<tr>
+<td><code>payload</code></td>
+<td>JSON</td>
+<td>Versioned serialized sighting payload</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>TEXT</td>
+<td>Pending, processing, accepted, or classified failure state</td>
+</tr>
+<tr>
+<td><code>attempt_count</code></td>
+<td>INTEGER</td>
+<td>Number of provider attempts</td>
+</tr>
+<tr>
+<td><code>next_attempt_at</code></td>
+<td>TIMESTAMP</td>
+<td>Earliest retry time</td>
+</tr>
+<tr>
+<td><code>provider_message_id</code></td>
+<td>TEXT</td>
+<td>Provider acceptance identifier when available</td>
+</tr>
+<tr>
+<td><code>last_error_code</code></td>
+<td>TEXT</td>
+<td>Safe machine-readable failure classification</td>
+</tr>
+<tr>
+<td><code>last_error_message</code></td>
+<td>TEXT</td>
+<td>Sanitized operational failure detail</td>
+</tr>
+<tr>
+<td><code>accepted_at</code></td>
+<td>TIMESTAMP</td>
+<td>Provider-acceptance timestamp</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TIMESTAMP</td>
+<td>Creation timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TIMESTAMP</td>
+<td>Last state-change timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>The unique deduplication key makes enqueueing idempotent. Indexed status and
+retry timestamps allow workers to claim due work without scanning completed
+delivery history.</p>
+<h2 id="community-bird-contribution-tables">Community Bird Contribution Tables<a class="headerlink" href="#community-bird-contribution-tables" title="Permanent link">&para;</a></h2>
+<h3 id="bird_community_details"><code>bird_community_details</code><a class="headerlink" href="#bird_community_details" title="Permanent link">&para;</a></h3>
+<p><code>bird_community_details</code> stores user-submitted species-enrichment content waiting for or passing moderation.</p>
+<p>It is separate from canonical <code>bird_species</code> so community contributions can be reviewed before being merged or surfaced.</p>
+<h3 id="community_bird_images"><code>community_bird_images</code><a class="headerlink" href="#community_bird_images" title="Permanent link">&para;</a></h3>
+<p><code>community_bird_images</code> stores user-submitted bird images linked to <code>bird_community_details</code>.</p>
+<p>It preserves attribution, moderation state, ordering, and default-image selection for community-supplied media.</p>
+<h2 id="community_prediction_ratings"><code>community_prediction_ratings</code><a class="headerlink" href="#community_prediction_ratings" title="Permanent link">&para;</a></h2>
+<p>Stores one star rating per user, per shared prediction.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>prediction_id</code></td>
+<td>INTEGER</td>
+<td>Shared prediction id</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>INTEGER</td>
+<td>Rating user id</td>
+</tr>
+<tr>
+<td><code>rating</code></td>
+<td>INTEGER</td>
+<td>1-5 star rating</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Important index:</p>
+<ul>
+<li>unique <code>(prediction_id, user_id)</code></li>
+</ul>
+<h2 id="community_prediction_reactions"><code>community_prediction_reactions</code><a class="headerlink" href="#community_prediction_reactions" title="Permanent link">&para;</a></h2>
+<p>Stores one thumbs reaction per user, per shared prediction.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>prediction_id</code></td>
+<td>INTEGER</td>
+<td>Shared prediction id</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>INTEGER</td>
+<td>Reacting user id</td>
+</tr>
+<tr>
+<td><code>reaction</code></td>
+<td>INTEGER</td>
+<td><code>1</code> for upvote, <code>-1</code> for downvote</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Important index:</p>
+<ul>
+<li>unique <code>(prediction_id, user_id)</code></li>
+</ul>
+<h2 id="community_prediction_comments"><code>community_prediction_comments</code><a class="headerlink" href="#community_prediction_comments" title="Permanent link">&para;</a></h2>
+<p>Stores comments on shared predictions.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>prediction_id</code></td>
+<td>INTEGER</td>
+<td>Shared prediction id</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>INTEGER</td>
+<td>Comment author id</td>
+</tr>
+<tr>
+<td><code>body</code></td>
+<td>TEXT</td>
+<td>Comment text</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Important read pattern:</p>
+<ul>
+<li>comments are queried by <code>prediction_id</code>, newest first</li>
+</ul>
+<h2 id="community_reports"><code>community_reports</code><a class="headerlink" href="#community_reports" title="Permanent link">&para;</a></h2>
+<p>Stores moderation reports for community posts, comments, and users.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>reporter_user_id</code></td>
+<td>INTEGER</td>
+<td>User who submitted the report</td>
+</tr>
+<tr>
+<td><code>prediction_id</code></td>
+<td>INTEGER</td>
+<td>Optional reported prediction id</td>
+</tr>
+<tr>
+<td><code>comment_id</code></td>
+<td>INTEGER</td>
+<td>Optional reported comment id</td>
+</tr>
+<tr>
+<td><code>reported_user_id</code></td>
+<td>INTEGER</td>
+<td>Optional reported user id</td>
+</tr>
+<tr>
+<td><code>report_lane</code></td>
+<td>TEXT</td>
+<td>Explicit lane such as <code>report_content</code> or <code>report_user</code></td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>TEXT</td>
+<td>Short machine-readable or user-supplied report reason</td>
+</tr>
+<tr>
+<td><code>details</code></td>
+<td>TEXT</td>
+<td>Optional free-text explanation</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>TEXT</td>
+<td>Review state such as <code>open</code>, <code>reviewing</code>, <code>resolved</code>, <code>dismissed</code></td>
+</tr>
+<tr>
+<td><code>workflow_stage</code></td>
+<td>TEXT</td>
+<td>Moderation stage such as <code>ticket_created</code>, <code>notification_sent</code>, or <code>reporter_follow_up</code></td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>TEXT</td>
+<td>Human triage priority such as <code>low</code>, <code>medium</code>, or <code>high</code></td>
+</tr>
+<tr>
+<td><code>severity_label</code></td>
+<td>TEXT</td>
+<td>Auto-classified severity such as <code>low</code>, <code>medium</code>, <code>high</code>, or <code>critical</code></td>
+</tr>
+<tr>
+<td><code>severity_score</code></td>
+<td>REAL</td>
+<td>Numeric severity score used with <code>severity_label</code></td>
+</tr>
+<tr>
+<td><code>outcome</code></td>
+<td>TEXT</td>
+<td>Resolution outcome such as <code>action_taken</code> or <code>no_action</code></td>
+</tr>
+<tr>
+<td><code>content_action_type</code></td>
+<td>TEXT</td>
+<td>Content-level action such as <code>content_removed</code>, <code>content_hidden</code>, <code>warning_only</code>, or <code>no_content_action</code></td>
+</tr>
+<tr>
+<td><code>trust_safety_action_type</code></td>
+<td>TEXT</td>
+<td>Case-level trust decision such as <code>warn</code>, <code>temporary_suspend</code>, <code>permanent_ban</code>, or <code>no_trust_action</code></td>
+</tr>
+<tr>
+<td><code>ticket_ack_message</code></td>
+<td>TEXT</td>
+<td>Initial user-facing acknowledgement message</td>
+</tr>
+<tr>
+<td><code>admin_user_id</code></td>
+<td>INTEGER</td>
+<td>Admin who last reviewed the report</td>
+</tr>
+<tr>
+<td><code>admin_note</code></td>
+<td>TEXT</td>
+<td>Internal review / moderation note</td>
+</tr>
+<tr>
+<td><code>admin_reply</code></td>
+<td>TEXT</td>
+<td>Moderator-facing or reporter-facing reply content used in the review flow</td>
+</tr>
+<tr>
+<td><code>user_response</code></td>
+<td>TEXT</td>
+<td>Reporter follow-up after a moderation decision</td>
+</tr>
+<tr>
+<td><code>user_responded_at</code></td>
+<td>TEXT</td>
+<td>Timestamp of the reporter follow-up</td>
+</tr>
+<tr>
+<td><code>decision_note</code></td>
+<td>TEXT</td>
+<td>Policy decision summary</td>
+</tr>
+<tr>
+<td><code>enforcement_note</code></td>
+<td>TEXT</td>
+<td>Enforcement summary text</td>
+</tr>
+<tr>
+<td><code>notification_message</code></td>
+<td>TEXT</td>
+<td>Final notification text</td>
+</tr>
+<tr>
+<td><code>reporter_notified_at</code></td>
+<td>TEXT</td>
+<td>Timestamp when the reporter was notified</td>
+</tr>
+<tr>
+<td><code>reported_user_notified_at</code></td>
+<td>TEXT</td>
+<td>Timestamp when the reported user was notified</td>
+</tr>
+<tr>
+<td><code>auto_classified_at</code></td>
+<td>TEXT</td>
+<td>Timestamp when severity classification was stamped</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>reviewed_at</code></td>
+<td>TEXT</td>
+<td>Timestamp of the latest review</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Important indexes:</p>
+<ul>
+<li><code>(status, created_at, id)</code></li>
+<li><code>(reporter_user_id, created_at, id)</code></li>
+<li><code>(report_lane, created_at, id)</code></li>
+<li><code>(reported_user_id, created_at, id)</code></li>
+</ul>
+<h2 id="user_blocks"><code>user_blocks</code><a class="headerlink" href="#user_blocks" title="Permanent link">&para;</a></h2>
+<p>Stores one-way user block relationships used by the community feed and interaction rules.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>blocker_user_id</code></td>
+<td>INTEGER</td>
+<td>User who initiated the block</td>
+</tr>
+<tr>
+<td><code>blocked_user_id</code></td>
+<td>INTEGER</td>
+<td>User being blocked</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Important indexes:</p>
+<ul>
+<li>unique <code>(blocker_user_id, blocked_user_id)</code></li>
+<li>index on <code>(blocked_user_id, blocker_user_id)</code></li>
+</ul>
+<h2 id="user_feedback"><code>user_feedback</code><a class="headerlink" href="#user_feedback" title="Permanent link">&para;</a></h2>
+<p>Stores the support ticket header for user/admin communication.</p>
+<p>This table is the persistent source of truth for user/admin communication.</p>
+<ul>
+<li>the phone is only a client view of the conversation</li>
+<li>the original user ticket text is still mirrored in <code>message</code></li>
+<li>the latest admin reply is still mirrored in <code>admin_response</code></li>
+<li>the responding admin is tracked in <code>admin_user_id</code></li>
+<li>the full conversation now lives in <code>user_feedback_messages</code></li>
+<li>Firebase Auth is used only to verify identity before the backend writes or returns feedback data</li>
+</ul>
+<p>So the feedback thread itself is not stored locally on the phone and is not stored in Firebase as the main record.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>INTEGER</td>
+<td>Feedback author</td>
+</tr>
+<tr>
+<td><code>subject</code></td>
+<td>TEXT</td>
+<td>Optional short subject line</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>TEXT</td>
+<td>Original ticket body</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>TEXT</td>
+<td>Ticket state such as <code>waiting_on_admin</code>, <code>waiting_on_user</code>, <code>closed_by_user</code>, or <code>resolved</code></td>
+</tr>
+<tr>
+<td><code>admin_response</code></td>
+<td>TEXT</td>
+<td>Latest mirrored admin reply text</td>
+</tr>
+<tr>
+<td><code>admin_user_id</code></td>
+<td>INTEGER</td>
+<td>Admin who replied</td>
+</tr>
+<tr>
+<td><code>sentiment_label</code></td>
+<td>TEXT</td>
+<td>Optional sentiment or tone classification</td>
+</tr>
+<tr>
+<td><code>sentiment_score</code></td>
+<td>REAL</td>
+<td>Optional numeric sentiment score</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>responded_at</code></td>
+<td>TEXT</td>
+<td>Timestamp when the admin replied</td>
+</tr>
+<tr>
+<td><code>last_message_at</code></td>
+<td>TEXT</td>
+<td>Timestamp of the latest thread message</td>
+</tr>
+<tr>
+<td><code>resolved_at</code></td>
+<td>TEXT</td>
+<td>Timestamp when the ticket was resolved</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="user_feedback_messages"><code>user_feedback_messages</code><a class="headerlink" href="#user_feedback_messages" title="Permanent link">&para;</a></h2>
+<p>Stores the actual support thread messages linked to <code>user_feedback</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>feedback_id</code></td>
+<td>INTEGER</td>
+<td>Parent support ticket id</td>
+</tr>
+<tr>
+<td><code>author_user_id</code></td>
+<td>INTEGER</td>
+<td>Optional user/admin id of the message author</td>
+</tr>
+<tr>
+<td><code>author_role</code></td>
+<td>TEXT</td>
+<td><code>user</code> or <code>admin</code></td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>TEXT</td>
+<td>Message body</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="trust_safety_actions"><code>trust_safety_actions</code><a class="headerlink" href="#trust_safety_actions" title="Permanent link">&para;</a></h2>
+<p>Stores account-level enforcement actions attached to <code>report_user</code> cases.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>report_id</code></td>
+<td>INTEGER</td>
+<td>Linked <code>community_reports</code> row</td>
+</tr>
+<tr>
+<td><code>reported_user_id</code></td>
+<td>INTEGER</td>
+<td>User account the action applies to</td>
+</tr>
+<tr>
+<td><code>action_type</code></td>
+<td>TEXT</td>
+<td><code>warn</code>, <code>temporary_suspend</code>, or <code>permanent_ban</code></td>
+</tr>
+<tr>
+<td><code>duration_hours</code></td>
+<td>INTEGER</td>
+<td>Optional duration for temporary suspensions</td>
+</tr>
+<tr>
+<td><code>starts_at</code></td>
+<td>TEXT</td>
+<td>Action start timestamp</td>
+</tr>
+<tr>
+<td><code>ends_at</code></td>
+<td>TEXT</td>
+<td>Optional end timestamp</td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>TEXT</td>
+<td>Human-authored enforcement reasoning</td>
+</tr>
+<tr>
+<td><code>created_by_admin_user_id</code></td>
+<td>INTEGER</td>
+<td>Admin who created the action</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="user_safety_signals"><code>user_safety_signals</code><a class="headerlink" href="#user_safety_signals" title="Permanent link">&para;</a></h2>
+<p>Stores derived safety signals used to understand repeated or escalating behaviour across moderation and block flows.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>user_id</code></td>
+<td>INTEGER</td>
+<td>User the signal is about</td>
+</tr>
+<tr>
+<td><code>signal_type</code></td>
+<td>TEXT</td>
+<td>Signal such as <code>reported_content</code>, <code>reported_user</code>, <code>blocked_by_user</code>, or trust-action-derived values</td>
+</tr>
+<tr>
+<td><code>source_table</code></td>
+<td>TEXT</td>
+<td>Source table such as <code>community_reports</code>, <code>user_blocks</code>, or <code>trust_safety_actions</code></td>
+</tr>
+<tr>
+<td><code>source_record_id</code></td>
+<td>INTEGER</td>
+<td>Optional linked row id in the source table</td>
+</tr>
+<tr>
+<td><code>weight</code></td>
+<td>REAL</td>
+<td>Numeric weight used for risk-style aggregation</td>
+</tr>
+<tr>
+<td><code>metadata_json</code></td>
+<td>TEXT</td>
+<td>Optional structured metadata for the signal</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bird_species_rag_embeddings"><code>bird_species_rag_embeddings</code><a class="headerlink" href="#bird_species_rag_embeddings" title="Permanent link">&para;</a></h2>
+<p>Caches embedding rows for the optional OpenAI retrieval path of the bird Q&amp;A feature.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>bird_species_id</code></td>
+<td>INTEGER</td>
+<td>Source species id</td>
+</tr>
+<tr>
+<td><code>content_hash</code></td>
+<td>TEXT</td>
+<td>Hash of the source searchable document</td>
+</tr>
+<tr>
+<td><code>embedding_model</code></td>
+<td>TEXT</td>
+<td>Embedding model name</td>
+</tr>
+<tr>
+<td><code>embedding_json</code></td>
+<td>TEXT</td>
+<td>Serialized vector</td>
+</tr>
+<tr>
+<td><code>source_text</code></td>
+<td>TEXT</td>
+<td>Searchable species document</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<h2 id="bird_species_local_semantic_embeddings"><code>bird_species_local_semantic_embeddings</code><a class="headerlink" href="#bird_species_local_semantic_embeddings" title="Permanent link">&para;</a></h2>
+<p>Stores locally computed semantic embeddings for the non-OpenAI retrieval path.</p>
+<p>This is the local-embedding companion to <code>bird_species_rag_embeddings</code>.</p>
+<h2 id="bird_species_sound_sources"><code>bird_species_sound_sources</code><a class="headerlink" href="#bird_species_sound_sources" title="Permanent link">&para;</a></h2>
+<p>This table is the current sound-ingestion source of truth.</p>
+<p>Purpose:</p>
+<ul>
+<li>keep full source attribution and license data per recording</li>
+<li>store more than one candidate recording per species</li>
+<li>separate the selected app-facing <code>song</code> / <code>call</code> pointers from the larger source archive</li>
+</ul>
+<p><code>bird_species.song_audio_url</code> and <code>bird_species.call_audio_url</code> remain the selected playback fields, while <code>bird_species_sound_sources</code> is the ingestion and retrieval source of truth.</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>bird_species_id</code></td>
+<td>INTEGER</td>
+<td>Foreign key to <code>bird_species</code></td>
+</tr>
+<tr>
+<td><code>source_name</code></td>
+<td>TEXT</td>
+<td>Usually <code>xeno-canto</code></td>
+</tr>
+<tr>
+<td><code>source_recording_id</code></td>
+<td>TEXT</td>
+<td>Source recording id</td>
+</tr>
+<tr>
+<td><code>source_page_url</code></td>
+<td>TEXT</td>
+<td>Public source page URL</td>
+</tr>
+<tr>
+<td><code>download_url</code></td>
+<td>TEXT</td>
+<td>Original downloadable audio URL</td>
+</tr>
+<tr>
+<td><code>storage_path</code></td>
+<td>TEXT</td>
+<td>Stored local or cloud storage path</td>
+</tr>
+<tr>
+<td><code>audio_role</code></td>
+<td>TEXT</td>
+<td><code>song</code>, <code>call</code>, <code>training_song</code>, or <code>definitive</code></td>
+</tr>
+<tr>
+<td><code>license_name</code></td>
+<td>TEXT</td>
+<td>Source license text</td>
+</tr>
+<tr>
+<td><code>recordist</code></td>
+<td>TEXT</td>
+<td>Attribution name</td>
+</tr>
+<tr>
+<td><code>quality_grade</code></td>
+<td>TEXT</td>
+<td>Quality label such as <code>A</code> / <code>B</code></td>
+</tr>
+<tr>
+<td><code>recording_type</code></td>
+<td>TEXT</td>
+<td><code>song</code>, <code>alarm call</code>, <code>flight call</code>, etc</td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>TEXT</td>
+<td>Recording country</td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>TEXT</td>
+<td>Free-text location</td>
+</tr>
+<tr>
+<td><code>recorded_at</code></td>
+<td>TEXT</td>
+<td>Date/time text if available</td>
+</tr>
+<tr>
+<td><code>duration_seconds</code></td>
+<td>REAL</td>
+<td>Audio duration</td>
+</tr>
+<tr>
+<td><code>remarks</code></td>
+<td>TEXT</td>
+<td>Recordist notes</td>
+</tr>
+<tr>
+<td><code>background_species</code></td>
+<td>TEXT</td>
+<td>Other species present</td>
+</tr>
+<tr>
+<td><code>channels</code></td>
+<td>INTEGER</td>
+<td>Mono/stereo channel count</td>
+</tr>
+<tr>
+<td><code>sample_rate_hz</code></td>
+<td>INTEGER</td>
+<td>Sampling rate</td>
+</tr>
+<tr>
+<td><code>is_selected</code></td>
+<td>INTEGER</td>
+<td><code>0/1</code> chosen exemplar marker</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Current indexes in the verified schema:</p>
+<ul>
+<li>unique <code>(source_name, source_recording_id, audio_role)</code></li>
+<li>index on <code>(bird_species_id, audio_role)</code></li>
+<li>index on <code>(bird_species_id, is_selected)</code></li>
+</ul>
+<p>Current relationship:</p>
+<ul>
+<li>one <code>bird_species</code> row can have many <code>bird_species_sound_sources</code></li>
+</ul>
+<h2 id="bird_species_sound_ingestion_status"><code>bird_species_sound_ingestion_status</code><a class="headerlink" href="#bird_species_sound_ingestion_status" title="Permanent link">&para;</a></h2>
+<p>Tracks the current ingestion state for each species in the sound-pipeline workflow.</p>
+<p>Used for:</p>
+<ul>
+<li>knowing whether a species still needs sound ingestion</li>
+<li>surfacing ingestion failures and retry reasons</li>
+<li>preventing duplicate ingestion work</li>
+</ul>
+<h2 id="promotions-tables">Promotions Tables<a class="headerlink" href="#promotions-tables" title="Permanent link">&para;</a></h2>
+<h3 id="promotions"><code>promotions</code><a class="headerlink" href="#promotions" title="Permanent link">&para;</a></h3>
+<p>Stores admin-managed promotional cards or banners shown in the app.</p>
+<p>Used for:</p>
+<ul>
+<li>scheduled promotional campaigns</li>
+<li>active/inactive app messaging</li>
+<li>priority-ordered display logic</li>
+</ul>
+<h3 id="user_promotion_state"><code>user_promotion_state</code><a class="headerlink" href="#user_promotion_state" title="Permanent link">&para;</a></h3>
+<p>Stores per-user interaction state for each promotion.</p>
+<p>Used for:</p>
+<ul>
+<li>throttling repeat display</li>
+<li>recording dismiss / click / show counts</li>
+<li>personalization of promo display frequency</li>
+</ul>
+<h2 id="admin-support-and-governance-tables">Admin, Support, And Governance Tables<a class="headerlink" href="#admin-support-and-governance-tables" title="Permanent link">&para;</a></h2>
+<h3 id="user_feedback_status_history"><code>user_feedback_status_history</code><a class="headerlink" href="#user_feedback_status_history" title="Permanent link">&para;</a></h3>
+<p>Stores the full status-transition history for a support ticket in <code>user_feedback</code>.</p>
+<h3 id="site_config"><code>site_config</code><a class="headerlink" href="#site_config" title="Permanent link">&para;</a></h3>
+<p>Stores editable application configuration values and admin-tunable runtime settings.</p>
+<h3 id="report_type"><code>report_type</code><a class="headerlink" href="#report_type" title="Permanent link">&para;</a></h3>
+<p>Stores the catalog of moderation/support report types.</p>
+<h3 id="sla_policy"><code>sla_policy</code><a class="headerlink" href="#sla_policy" title="Permanent link">&para;</a></h3>
+<p>Stores SLA timing rules by report type and priority.</p>
+<h3 id="escalation_rule"><code>escalation_rule</code><a class="headerlink" href="#escalation_rule" title="Permanent link">&para;</a></h3>
+<p>Stores rule-based escalation logic for report handling.</p>
+<h3 id="audit_log"><code>audit_log</code><a class="headerlink" href="#audit_log" title="Permanent link">&para;</a></h3>
+<p>Stores append-only record-level audit information for tracked admin changes.</p>
+<h2 id="relationships">Relationships<a class="headerlink" href="#relationships" title="Permanent link">&para;</a></h2>
+<div class="mermaid">
+erDiagram
+    bird_species ||--o{ predictions : has
+    bird_species ||--o{ bird_detail : has
+    predictions ||--o{ community_prediction_ratings : has
+    predictions ||--o{ community_prediction_reactions : has
+    predictions ||--o{ community_prediction_comments : has
+    predictions ||--o{ community_reports : has
+    users ||--o{ community_reports : files
+    users ||--o{ user_blocks : blocks
+    users ||--o{ user_feedback : sends
+    bird_species ||--o{ bird_species_rag_embeddings : has
+    bird_species ||--o{ bird_species_sound_sources : has
+
+    bird_species {
+        INTEGER id
+        TEXT common_name
+        TEXT scientific_name
+        TEXT default_image_url
+        TEXT song_audio_url
+        TEXT call_audio_url
+        TEXT song_audio_quality
+        TEXT call_audio_quality
+    }
+
+    predictions {
+        INTEGER id
+        INTEGER bird_species_id
+        REAL confidence
+        REAL sound_length
+        TEXT image_url
+        TEXT audio_url
+        TEXT notes
+        INTEGER shared_to_community
+        TEXT community_shared_at
+    }
+
+    community_reports {
+        INTEGER id
+        INTEGER reporter_user_id
+        INTEGER prediction_id
+        INTEGER comment_id
+        INTEGER reported_user_id
+        TEXT reason
+        TEXT status
+    }
+
+    user_blocks {
+        INTEGER id
+        INTEGER blocker_user_id
+        INTEGER blocked_user_id
+    }
+
+    user_feedback {
+        INTEGER id
+        INTEGER user_id
+        TEXT subject
+        TEXT status
+        TEXT admin_response
+    }
+
+    bird_detail {
+        INTEGER id
+        INTEGER bird_species_id
+        TEXT image_url
+        INTEGER display_order
+    }
+
+    bird_species_sound_sources {
+        INTEGER id
+        INTEGER bird_species_id
+        TEXT source_name
+        TEXT source_recording_id
+        TEXT storage_path
+        TEXT audio_role
+        INTEGER is_selected
+    }
+
+    community_prediction_ratings {
+        INTEGER id
+        INTEGER prediction_id
+        INTEGER user_id
+        INTEGER rating
+    }
+
+    community_prediction_reactions {
+        INTEGER id
+        INTEGER prediction_id
+        INTEGER user_id
+        INTEGER reaction
+    }
+
+    community_prediction_comments {
+        INTEGER id
+        INTEGER prediction_id
+        INTEGER user_id
+        TEXT body
+    }
+
+    bird_species_rag_embeddings {
+        INTEGER id
+        INTEGER bird_species_id
+        TEXT content_hash
+        TEXT embedding_model
+    }
+</div>
+
+<h2 id="image-management-model">Image Management Model<a class="headerlink" href="#image-management-model" title="Permanent link">&para;</a></h2>
+<p>The current admin image-management model works like this:</p>
+<ol>
+<li>all manageable species images live in <code>bird_detail</code></li>
+<li>image order is stored in <code>bird_detail.display_order</code></li>
+<li>the selected default image is stored in <code>bird_species.default_image_url</code></li>
+<li>the default image should be one of that species’s <code>bird_detail.image_url</code> values</li>
+<li>rows are never deleted just to hide them from the gallery UI</li>
+</ol>
+<p>Current gallery visibility rule:</p>
+<ul>
+<li>rows with <code>display_order &lt; 999</code> are treated as visible gallery images</li>
+<li>rows with <code>display_order = 999</code> are treated as hidden from the gallery</li>
+<li>hidden rows still remain in <code>bird_detail</code></li>
+<li>hidden rows are still available in richer API payloads for future screens or admin tooling</li>
+</ul>
+<p>Backend admin endpoints that operate on this model:</p>
+<ul>
+<li><code>GET /admin/species</code></li>
+<li><code>GET /admin/species/{species_id}/images</code></li>
+<li><code>PATCH /admin/species/{species_id}/default-image</code></li>
+<li><code>PATCH /admin/species/{species_id}/image-order</code></li>
+</ul>
+<h2 id="media-path-notes">Media Path Notes<a class="headerlink" href="#media-path-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>migrated species media is stored in the application database as stable storage paths instead of local <code>/uploads/...</code> URLs</li>
+<li>the backend signs those paths at response time before returning them to the app or admin website</li>
+<li>some older prediction rows may still contain already-signed cloud URLs, which the backend passes through as-is</li>
+<li><code>predictions.audio_url</code> is used by Add Prediction, Update Prediction, and prediction-detail playback flows</li>
+</ul>
+<h2 id="current-read-behavior">Current Read Behavior<a class="headerlink" href="#current-read-behavior" title="Permanent link">&para;</a></h2>
+<p>The app and admin website currently rely on these rules:</p>
+<ul>
+<li>Bird List thumbnails use <code>bird_species.default_image_url</code></li>
+<li>Bird Detail hero image uses <code>bird_species.default_image_url</code> unless a prediction-specific image is present</li>
+<li>community detail also prefers prediction-specific images first</li>
+<li>Bird Detail gallery uses only visible <code>bird_detail</code> rows ordered by <code>display_order</code></li>
+<li>hidden gallery rows (<code>display_order = 999</code>) are excluded from <code>additional_image_urls</code></li>
+<li>richer image metadata is now also available via <code>additional_image_items</code></li>
+<li>the admin website edits:</li>
+<li><code>bird_species.default_image_url</code></li>
+<li><code>bird_detail.display_order</code></li>
+</ul>
+<p>Admin-web gallery behavior:</p>
+<ul>
+<li><code>Remove</code> on an image row sets that row to the hidden-gallery state</li>
+<li><code>Restore</code> moves that row back into the visible ordered set</li>
+<li>save writes:</li>
+<li>contiguous <code>0..N</code> orders for visible rows</li>
+<li><code>999</code> for hidden rows</li>
+<li>this is a hide/unhide workflow, not a delete workflow</li>
+</ul>
+<h2 id="community-data-rules">Community Data Rules<a class="headerlink" href="#community-data-rules" title="Permanent link">&para;</a></h2>
+<ul>
+<li>community state is layered on top of <code>predictions</code>, not stored as a separate post table</li>
+<li>unsharing a prediction clears its community visibility flags without deleting the prediction row</li>
+<li>deleting a prediction removes its attached community ratings, reactions, and comments</li>
+<li>community rating/reaction/comment tables are only meaningful for predictions where <code>shared_to_community = 1</code></li>
+</ul>
+<h2 id="bird-qa-source-data">Bird Q&amp;A Source Data<a class="headerlink" href="#bird-qa-source-data" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>bird_species</code> is also the source table for the bird-question retrieval corpus</li>
+<li>the new extended descriptive fields can improve local matching and OpenAI embedding quality when populated</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../api/uploads/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Uploads">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Uploads
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../setup/" class="md-footer__link md-footer__link--next" aria-label="Next: Setup Guide">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Setup Guide
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

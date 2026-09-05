@@ -1,0 +1,3153 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production architecture, AI/ML, data, API, and mobile engineering documentation for Spark Birds.">
+      
+      
+        <meta name="author" content="Delroy Peters">
+      
+      
+        <link rel="canonical" href="https://roy2055.github.io/bird-platform-docs-public/sound-ingestion-pipeline/">
+      
+      
+        <link rel="prev" href="../image-ingestion-pipeline/">
+      
+      
+        <link rel="next" href="../sound-training-curation-flow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Sound Ingestion And Training - Spark Birds Technical Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sound-ingestion-and-training-pipeline" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spark Birds Technical Documentation" class="md-header__button md-logo" aria-label="Spark Birds Technical Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 11.5-3.05-1.13c-.26-1.15-.91-1.81-.91-1.81a4.19 4.19 0 0 0-5.93 0l-1.48 1.48L5 3c-1 4 0 8 2.45 11.22L2 19.5s8.89 2 14.07-2.05c2.76-2.16 3.38-3.42 3.77-4.75zm-5.29.22c-.39.39-1.03.39-1.42 0a.996.996 0 0 1 0-1.41c.39-.39 1.03-.39 1.42 0s.39 1.02 0 1.41"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spark Birds Technical Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Sound Ingestion And Training
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../rag-pipeline/" class="md-tabs__link">
+          
+  
+  
+  AI And Machine Learning
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../frontend/" class="md-tabs__link">
+          
+  
+  
+  Product Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../database/" class="md-tabs__link">
+          
+  
+  
+  Data
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../setup/" class="md-tabs__link">
+          
+  
+  
+  Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spark Birds Technical Documentation" class="md-nav__button md-logo" aria-label="Spark Birds Technical Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 11.5-3.05-1.13c-.26-1.15-.91-1.81-.91-1.81a4.19 4.19 0 0 0-5.93 0l-1.48 1.48L5 3c-1 4 0 8 2.45 11.22L2 19.5s8.89 2 14.07-2.05c2.76-2.16 3.38-3.42 3.77-4.75zm-5.29.22c-.39.39-1.03.39-1.42 0a.996.996 0 0 1 0-1.41c.39-.39 1.03-.39 1.42 0s.39 1.02 0 1.41"/></svg>
+
+    </a>
+    Spark Birds Technical Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-highlights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Highlights
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../public-docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Documentation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../production-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nearby-bird-alerts-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nearby Bird Alerts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../backend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moderation-process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moderation Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI And Machine Learning
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI And Machine Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Q&A RAG Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifacts-embeddings-and-classification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artifacts, Embeddings, And Classification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bird-data-collection-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Data Collection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-ingestion-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Ingestion And Training
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Ingestion And Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visual-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visual Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-End Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingestion-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestion Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieval-and-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval And Answering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-database-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Database Shape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Database Shape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bird_species_sound_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_sound_sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-script-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Script Layout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Script Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-discovery-and-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Discovery and download
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1a-training-clip-scoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1a. Training clip scoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1b-definitive-mp3-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1b. Definitive MP3 import
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1c-wikimedia-commons-audio-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1c. Wikimedia Commons audio import
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-normalize-selected-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Normalize selected files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-audit-retrieval-and-backfill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Audit, retrieval, and backfill
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3b-build-the-labeled-sound-training-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3b. Build the labeled sound-training dataset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-loop-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Loop orchestration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-train-the-sound-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Train the sound classifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operational-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Warning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retrieval-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval Layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-dataset-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training Dataset Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-storage-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Storage Pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selection-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selection Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-is-not-pure-rag-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Is Not Pure RAG Yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sound-training-curation-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Training Curation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bird-likelihood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contextual Bird Likelihood
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Product Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin Web
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-navigation-and-core-screens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Navigation And Core Screens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-bird-detail-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Bird Detail View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-prediction-create-and-update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Prediction Create And Update
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-analytics-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Analytics And Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-colors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Colors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/predictions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Predictions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bird-species/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Species
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/uploads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uploads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commit Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#visual-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Visual Flow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Visual Flow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#end-to-end-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        End-to-End Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingestion-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingestion Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieval-and-answering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval And Answering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#source-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-database-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Database Shape
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Database Shape">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bird_species_sound_sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        bird_species_sound_sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-script-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Script Layout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Script Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-discovery-and-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Discovery and download
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1a-training-clip-scoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1a. Training clip scoring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1b-definitive-mp3-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1b. Definitive MP3 import
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1c-wikimedia-commons-audio-import" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1c. Wikimedia Commons audio import
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-normalize-selected-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Normalize selected files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-audit-retrieval-and-backfill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Audit, retrieval, and backfill
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3b-build-the-labeled-sound-training-dataset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3b. Build the labeled sound-training dataset
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-loop-orchestration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Loop orchestration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-train-the-sound-classifier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Train the sound classifier
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operational-warning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Operational Warning
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#retrieval-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieval Layer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#training-dataset-shape" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Training Dataset Shape
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recommended-storage-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Recommended Storage Pattern
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-status" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Status
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selection-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selection Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-is-not-pure-rag-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Is Not Pure RAG Yet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="sound-ingestion-and-training-pipeline">Sound Ingestion And Training Pipeline<a class="headerlink" href="#sound-ingestion-and-training-pipeline" title="Permanent link">&para;</a></h1>
+<p>This page documents the current sound ingestion, sound dataset preparation, and sound-classifier training flow.</p>
+<p>It started as a <code>xeno-canto</code> ingestion pipeline, and now also includes:</p>
+<ul>
+<li>Dropbox <code>Definitive MP3</code> imports</li>
+<li>xeno-canto training-clip top-up across already-covered species</li>
+<li>Wikimedia Commons audio import</li>
+<li>species-labeled sound training dataset preparation</li>
+<li>first-pass sound-classifier training</li>
+</ul>
+<p>Key scripts:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/download_xeno_canto_sounds.py">bird-agent/download_xeno_canto_sounds.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/sync_species_sounds.py">bird-agent/sync_species_sounds.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/sound_rag.py">bird-agent/sound_rag.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/check_bird_sound_ingestion_progress.py">bird-agent/check_bird_sound_ingestion_progress.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/query_species_sounds.py">bird-agent/query_species_sounds.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/backfill_xeno_canto_sound_metadata.py">bird-agent/backfill_xeno_canto_sound_metadata.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/run_next_sound_ingestion.py">bird-agent/run_next_sound_ingestion.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/run_sound_ingestion_loop.py">bird-agent/run_sound_ingestion_loop.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/check_sound_ingestion_status.py">bird-agent/check_sound_ingestion_status.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/media.py">bird-agent/media.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/import_commons_bird_sounds.py">bird-agent/import_commons_bird_sounds.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/prepare_sound_training_data.py">bird-agent/ai/prepare_sound_training_data.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/import_definitive_mp3_sounds.py">bird-agent/ai/import_definitive_mp3_sounds.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/train_bird_sound_classifier.py">bird-agent/ai/train_bird_sound_classifier.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/decode_audio.swift">bird-agent/ai/decode_audio.swift</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/docs/sound-training-curation-flow.md">sound-training-curation-flow.md</a></li>
+</ul>
+<p>It is intentionally split into:</p>
+<ul>
+<li>ingestion into canonical app sound fields</li>
+<li>metadata-first retrieval</li>
+<li>labeled dataset preparation</li>
+<li>model training</li>
+<li>supporting loop and audit scripts</li>
+</ul>
+<h2 id="visual-flow">Visual Flow<a class="headerlink" href="#visual-flow" title="Permanent link">&para;</a></h2>
+<h3 id="end-to-end-overview">End-to-End Overview<a class="headerlink" href="#end-to-end-overview" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    A["bird_species rows&lt;br/&gt;common_name&lt;br/&gt;scientific_name"] --&gt; B["xeno-canto discovery&lt;br/&gt;download_xeno_canto_sounds.py"]
+    B --&gt; C["Candidate recordings&lt;br/&gt;metadata + file URLs"]
+    C --&gt; D["Filter and rank&lt;br/&gt;license&lt;br/&gt;quality&lt;br/&gt;recording type&lt;br/&gt;duration"]
+    D --&gt; E["Download selected audio"]
+    E --&gt; F["bird_species_sound_sources&lt;br/&gt;source metadata rows"]
+    F --&gt; G["sync_species_sounds.py"]
+    G --&gt; H["bird_species.song_audio_url&lt;br/&gt;bird_species.call_audio_url"]
+    H --&gt; I["App playback"]
+
+    B --&gt; B2["Top-up extra training clips&lt;br/&gt;--top-up-all-species&lt;br/&gt;--additional-training-clips N"]
+    B2 --&gt; F
+
+    J["Dropbox Definitive MP3&lt;br/&gt;BirdSounds/Uk/Definitive MP3"] --&gt; K["import_definitive_mp3_sounds.py"]
+    J2["Wikimedia Commons audio&lt;br/&gt;species audio categories"] --&gt; K2["import_commons_bird_sounds.py"]
+    F --&gt; L["prepare_sound_training_data.py"]
+    K2 --&gt; L
+    K --&gt; M["Sound training dataset&lt;br/&gt;data/sound-training"]
+    L --&gt; M
+    M --&gt; N["Per-species folders&lt;br/&gt;song / call / definitive"]
+    N --&gt; O["train_bird_sound_classifier.py"]
+    O --&gt; P["decode_audio.swift&lt;br/&gt;MP3 to WAV"]
+    P --&gt; Q["PyTorch resample + crop"]
+    Q --&gt; R["Log-mel spectrogram"]
+    R --&gt; S["CNN backbone"]
+    S --&gt; T["bird-sound-model.pt"]
+    T --&gt; U["Next step: sound inference endpoint"]</code></pre>
+<h3 id="ingestion-overview">Ingestion Overview<a class="headerlink" href="#ingestion-overview" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    A["bird_species rows"] --&gt; B["Discovery&lt;br/&gt;query xeno-canto"]
+    B --&gt; C["Candidate recordings"]
+    C --&gt; D["Filter and rank"]
+    D --&gt; E["Download selected audio"]
+    E --&gt; F["Normalize and store"]
+    F --&gt; G["Persist metadata"]
+    G --&gt; H["Index for retrieval"]
+    H --&gt; I["Serve app playback"]</code></pre>
+<h3 id="retrieval-and-answering">Retrieval And Answering<a class="headerlink" href="#retrieval-and-answering" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    A["User or backend query&lt;br/&gt;species&lt;br/&gt;sound role&lt;br/&gt;region&lt;br/&gt;quality"] --&gt; B["Metadata retrieval&lt;br/&gt;bird_species_sound_sources"]
+    B --&gt; C["Optional semantic retrieval&lt;br/&gt;remarks&lt;br/&gt;background species&lt;br/&gt;recording notes"]
+    C --&gt; D["Best matching recordings"]
+    D --&gt; E["Return playback URLs&lt;br/&gt;plus source attribution"]
+    D --&gt; F["Optional LLM answer&lt;br/&gt;explain why these clips match"]</code></pre>
+<h2 id="source-strategy">Source Strategy<a class="headerlink" href="#source-strategy" title="Permanent link">&para;</a></h2>
+<p>Primary source:</p>
+<ul>
+<li><code>xeno-canto</code></li>
+</ul>
+<p>Why it fits:</p>
+<ul>
+<li>free public bird recording archive</li>
+<li>searchable API and downloadable file links</li>
+<li>rich metadata per recording</li>
+<li>broad global species coverage</li>
+</ul>
+<p>Important constraint:</p>
+<ul>
+<li>licenses are per recording, so ingestion must always keep the original license and attribution metadata with the stored file</li>
+</ul>
+<p>Relevant official references:</p>
+<ul>
+<li><a href="https://xeno-canto.org/explore/api">xeno-canto API</a></li>
+<li><a href="https://xeno-canto.org/">xeno-canto home</a></li>
+<li>example recording pages with license and technical metadata:</li>
+<li><a href="https://xeno-canto.org/51247">XC51247</a></li>
+<li><a href="https://xeno-canto.org/905260">XC905260</a></li>
+</ul>
+<h2 id="current-database-shape">Current Database Shape<a class="headerlink" href="#current-database-shape" title="Permanent link">&para;</a></h2>
+<p>The current app-facing fields stay in <code>bird_species</code>:</p>
+<ul>
+<li><code>song_audio_url</code></li>
+<li><code>call_audio_url</code></li>
+</ul>
+<p>Those remain the fast selected pointers used by the mobile app.</p>
+<p>The current source-of-truth table is:</p>
+<h3 id="bird_species_sound_sources"><code>bird_species_sound_sources</code><a class="headerlink" href="#bird_species_sound_sources" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>INTEGER</td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>bird_species_id</code></td>
+<td>INTEGER</td>
+<td>Foreign key to <code>bird_species</code></td>
+</tr>
+<tr>
+<td><code>source_name</code></td>
+<td>TEXT</td>
+<td>Usually <code>xeno-canto</code></td>
+</tr>
+<tr>
+<td><code>source_recording_id</code></td>
+<td>TEXT</td>
+<td>xeno-canto recording id such as <code>XC905260</code></td>
+</tr>
+<tr>
+<td><code>source_page_url</code></td>
+<td>TEXT</td>
+<td>Canonical xeno-canto recording page</td>
+</tr>
+<tr>
+<td><code>download_url</code></td>
+<td>TEXT</td>
+<td>Original downloadable audio URL from the source</td>
+</tr>
+<tr>
+<td><code>storage_path</code></td>
+<td>TEXT</td>
+<td>Internal stored file path, local or Firebase-style</td>
+</tr>
+<tr>
+<td><code>audio_role</code></td>
+<td>TEXT</td>
+<td><code>song</code> or <code>call</code></td>
+</tr>
+<tr>
+<td><code>license_name</code></td>
+<td>TEXT</td>
+<td>Full license string</td>
+</tr>
+<tr>
+<td><code>recordist</code></td>
+<td>TEXT</td>
+<td>Original recordist attribution</td>
+</tr>
+<tr>
+<td><code>quality_grade</code></td>
+<td>TEXT</td>
+<td>Quality rating such as <code>A</code> or <code>B</code></td>
+</tr>
+<tr>
+<td><code>recording_type</code></td>
+<td>TEXT</td>
+<td><code>song</code>, <code>alarm call</code>, <code>flight call</code>, etc</td>
+</tr>
+<tr>
+<td><code>country</code></td>
+<td>TEXT</td>
+<td>Recording country</td>
+</tr>
+<tr>
+<td><code>location</code></td>
+<td>TEXT</td>
+<td>Free-text location</td>
+</tr>
+<tr>
+<td><code>recorded_at</code></td>
+<td>TEXT</td>
+<td>Date/time text if available</td>
+</tr>
+<tr>
+<td><code>duration_seconds</code></td>
+<td>REAL</td>
+<td>Audio length</td>
+</tr>
+<tr>
+<td><code>remarks</code></td>
+<td>TEXT</td>
+<td>Recordist remarks</td>
+</tr>
+<tr>
+<td><code>background_species</code></td>
+<td>TEXT</td>
+<td>Other species listed in the recording</td>
+</tr>
+<tr>
+<td><code>channels</code></td>
+<td>INTEGER</td>
+<td>Mono/stereo style channel count if known</td>
+</tr>
+<tr>
+<td><code>sample_rate_hz</code></td>
+<td>INTEGER</td>
+<td>Audio sampling rate if known</td>
+</tr>
+<tr>
+<td><code>is_selected</code></td>
+<td>INTEGER</td>
+<td><code>1</code> when this row is the current chosen exemplar</td>
+</tr>
+<tr>
+<td><code>created_at</code></td>
+<td>TEXT</td>
+<td>Insert timestamp</td>
+</tr>
+<tr>
+<td><code>updated_at</code></td>
+<td>TEXT</td>
+<td>Update timestamp</td>
+</tr>
+</tbody>
+</table>
+<p>Current indexes:</p>
+<ul>
+<li>unique <code>source_name, source_recording_id, audio_role</code></li>
+<li>index on <code>bird_species_id, audio_role</code></li>
+<li>index on <code>bird_species_id, is_selected</code></li>
+</ul>
+<h2 id="current-script-layout">Current Script Layout<a class="headerlink" href="#current-script-layout" title="Permanent link">&para;</a></h2>
+<h3 id="1-discovery-and-download">1. Discovery and download<a class="headerlink" href="#1-discovery-and-download" title="Permanent link">&para;</a></h3>
+<p>Base script:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/download_xeno_canto_sounds.py">bird-agent/download_xeno_canto_sounds.py</a></li>
+</ul>
+<p>Current responsibilities:</p>
+<ul>
+<li>query xeno-canto by scientific name first</li>
+<li>fall back to common-name aliases when needed</li>
+<li>capture raw metadata for selected recordings</li>
+<li>filter candidates by:</li>
+<li>allowed license</li>
+<li>preferred quality</li>
+<li>preferred recording type</li>
+<li>reasonable duration</li>
+<li>download the top selected <code>song</code> and <code>call</code> candidates</li>
+<li>enrich selected rows from the recording detail pages when needed</li>
+<li>write rows into <code>bird_species_sound_sources</code></li>
+</ul>
+<p>Current newer capability:</p>
+<ul>
+<li><code>--additional-training-clips N</code></li>
+<li>download extra song recordings beyond the canonical selected pair</li>
+<li>store them as <code>training_song</code></li>
+<li>keep them non-selected so app playback stays stable</li>
+</ul>
+<p>Current newer top-up mode:</p>
+<ul>
+<li><code>--top-up-all-species</code></li>
+<li>scan the full species table, not just species still missing canonical song/call</li>
+<li>top up only the training-only clip depth</li>
+<li>leave selected <code>song</code> / <code>call</code> rows unchanged</li>
+</ul>
+<p>This is currently the best path for deepening the training dataset from xeno-canto alone.</p>
+<h3 id="1a-training-clip-scoring">1a. Training clip scoring<a class="headerlink" href="#1a-training-clip-scoring" title="Permanent link">&para;</a></h3>
+<p>Extra xeno-canto training clips are no longer chosen only by broad role and raw quality rank.</p>
+<p>The downloader now applies a dedicated scoring function:</p>
+<ul>
+<li><code>score_training_sound_clip(...)</code></li>
+</ul>
+<p>Current scoring preferences:</p>
+<ul>
+<li>prefer <code>song</code> recordings over <code>call</code>-like roles</li>
+<li>prefer quality grades:</li>
+<li><code>A</code></li>
+<li>then <code>B</code></li>
+<li>then lower grades</li>
+<li>prefer moderate training-friendly durations:</li>
+<li>roughly <code>5</code> to <code>20</code> seconds strongest</li>
+<li>penalize clips with:</li>
+<li><code>background_species</code></li>
+<li>noisy recordist remarks</li>
+<li>distant / traffic / wind / overlap style notes</li>
+<li>penalize weak role hints such as:</li>
+<li><code>alarm</code></li>
+<li><code>flight call</code></li>
+<li><code>subsong</code></li>
+</ul>
+<p>This gives the pipeline a more learnable training subset than simply "all available song mp3 files."</p>
+<p>Conceptually, the score behaves like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>score =
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  quality score
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  + song-role preference
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  + useful-duration bonus
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  - background-species penalty
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  - noisy-remarks penalty
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  - weak-recording-type penalty
+</code></pre></div>
+<p>The practical goal is:</p>
+<ul>
+<li>keep fewer noisy exemplars</li>
+<li>prefer clearer single-species song recordings</li>
+<li>raise the average usefulness of training clips before they ever reach the classifier</li>
+</ul>
+<p>That scoring is now also used during dataset preparation so the exported training set keeps only the top-scoring clips per species. The full curation step is documented separately in:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/docs/sound-training-curation-flow.md">sound-training-curation-flow.md</a></li>
+</ul>
+<h3 id="1b-definitive-mp3-import">1b. Definitive MP3 import<a class="headerlink" href="#1b-definitive-mp3-import" title="Permanent link">&para;</a></h3>
+<p>Used to supplement the thin selected sound set with a broader curated local library.</p>
+<p>Base script:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/import_definitive_mp3_sounds.py">import_definitive_mp3_sounds.py</a></li>
+</ul>
+<p>Current responsibilities:</p>
+<ul>
+<li>scan Dropbox <code>Definitive MP3</code></li>
+<li>normalize filenames such as:</li>
+<li><code>Yellowhammer.1.mp3</code></li>
+<li><code>Long Eared Owl.mp3</code></li>
+<li><code>Canadian Goose.mp3</code></li>
+<li>map them onto <code>bird_species.common_name</code></li>
+<li>apply a small alias table for known naming variants</li>
+<li>link or copy matched files into:</li>
+<li><code>bird-agent/data/sound-training/{species_id}/definitive/...</code></li>
+<li>write:</li>
+<li><code>definitive_sound_manifest.json</code></li>
+<li><code>definitive_sound_unmatched.json</code></li>
+</ul>
+<h3 id="1c-wikimedia-commons-audio-import">1c. Wikimedia Commons audio import<a class="headerlink" href="#1c-wikimedia-commons-audio-import" title="Permanent link">&para;</a></h3>
+<p>Used to add extra freely licensed training clips from Commons species audio categories.</p>
+<p>Base script:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/import_commons_bird_sounds.py">import_commons_bird_sounds.py</a></li>
+</ul>
+<p>Current responsibilities:</p>
+<ul>
+<li>query Commons category pages such as:</li>
+<li><code>Category:Audio files of &lt;scientific name&gt;</code></li>
+<li><code>Category:Audio files of &lt;common name&gt;</code></li>
+<li>fetch file metadata through the MediaWiki API</li>
+<li>download supported audio formats currently proven in the trainer path:</li>
+<li><code>.mp3</code></li>
+<li><code>.wav</code></li>
+<li>store them as non-selected <code>training_song</code> rows</li>
+<li>retry and continue on <code>429 Too Many Requests</code> responses instead of aborting the whole run</li>
+</ul>
+<p>Important current constraint:</p>
+<ul>
+<li>Commons often exposes bird audio as <code>.ogg</code> or <code>.flac</code></li>
+<li>the current importer intentionally limits itself to formats that fit the present decode/training path cleanly</li>
+</ul>
+<h3 id="2-normalize-selected-files">2. Normalize selected files<a class="headerlink" href="#2-normalize-selected-files" title="Permanent link">&para;</a></h3>
+<p>Base script:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/sync_species_sounds.py">bird-agent/sync_species_sounds.py</a></li>
+</ul>
+<p>Current responsibilities:</p>
+<ul>
+<li>create canonical filenames such as:</li>
+<li><code>{slug}_song.mp3</code></li>
+<li><code>{slug}_call.mp3</code></li>
+<li>map the selected source rows back into:</li>
+<li><code>bird_species.song_audio_url</code></li>
+<li><code>bird_species.call_audio_url</code></li>
+<li>keep the selected metadata row marked with <code>is_selected = 1</code></li>
+</ul>
+<h3 id="3-audit-retrieval-and-backfill">3. Audit, retrieval, and backfill<a class="headerlink" href="#3-audit-retrieval-and-backfill" title="Permanent link">&para;</a></h3>
+<p>Current scripts:</p>
+<ul>
+<li><code>check_bird_sound_ingestion_progress.py</code></li>
+<li><code>query_species_sounds.py</code></li>
+<li><code>backfill_xeno_canto_sound_metadata.py</code></li>
+</ul>
+<p>Current capabilities:</p>
+<ul>
+<li>species with selected song</li>
+<li>species with selected call</li>
+<li>species with candidate recordings but nothing selected</li>
+<li>species still missing any usable sound</li>
+<li>counts by license and quality</li>
+<li>metadata-first retrieval for local sound queries</li>
+<li>backfill enrichment for older rows that were ingested before detail-page metadata capture was added</li>
+</ul>
+<h3 id="3b-build-the-labeled-sound-training-dataset">3b. Build the labeled sound-training dataset<a class="headerlink" href="#3b-build-the-labeled-sound-training-dataset" title="Permanent link">&para;</a></h3>
+<p>Base script:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/prepare_sound_training_data.py">prepare_sound_training_data.py</a></li>
+</ul>
+<p>Current responsibilities:</p>
+<ul>
+<li>read <code>bird_species_sound_sources</code></li>
+<li>export per-species training folders</li>
+<li>include selected-only rows or all ingested rows</li>
+<li>preserve role separation such as:</li>
+<li><code>song</code></li>
+<li><code>call</code></li>
+<li>normalize extra training roles into song-like training data:</li>
+<li><code>definitive</code></li>
+<li><code>training_song</code></li>
+<li>write:</li>
+<li><code>species.json</code></li>
+<li><code>sound_training_manifest.json</code></li>
+</ul>
+<p>Current dataset root:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/data/sound-training">bird-agent/data/sound-training</a></li>
+</ul>
+<p>Recommended larger network-backed dataset roots:</p>
+<ul>
+<li><code>/Volumes/DATA/sound-training</code></li>
+<li><code>/Volumes/DATA/sound-training-all</code></li>
+</ul>
+<h3 id="4-loop-orchestration">4. Loop orchestration<a class="headerlink" href="#4-loop-orchestration" title="Permanent link">&para;</a></h3>
+<p>Current scripts:</p>
+<ul>
+<li><code>run_next_sound_ingestion.py</code></li>
+<li><code>run_sound_ingestion_loop.py</code></li>
+<li><code>check_sound_ingestion_status.py</code></li>
+</ul>
+<p>Current behavior:</p>
+<ul>
+<li>processes <code>3</code> species per batch by default</li>
+<li>waits <code>20</code> seconds between batches by default</li>
+<li>loads <code>XENO_CANTO_API_KEY</code> from <code>bird-agent/.env</code></li>
+<li>pauses on operational issues such as a missing API key</li>
+</ul>
+<h3 id="5-train-the-sound-classifier">5. Train the sound classifier<a class="headerlink" href="#5-train-the-sound-classifier" title="Permanent link">&para;</a></h3>
+<p>Base script:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/train_bird_sound_classifier.py">train_bird_sound_classifier.py</a></li>
+</ul>
+<p>Current behavior:</p>
+<ol>
+<li>load species folders from the training dataset</li>
+<li>enforce a minimum clip threshold per species</li>
+<li>split clips per species into train / val / test</li>
+<li>decode MP3s to WAV using:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/ai/decode_audio.swift">decode_audio.swift</a></li>
+<li>resample and crop in PyTorch</li>
+<li>convert waveforms to log-mel spectrogram features</li>
+<li>train a CNN classifier</li>
+<li>save the artifact to:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/models/bird-sound-model.pt">bird-sound-model.pt</a></li>
+</ol>
+<p>Important current limitation:</p>
+<ul>
+<li>the sound inference endpoint is not built yet</li>
+<li>the mobile app can play and upload sound, but cannot yet call a production <code>/identify-bird-sound</code> route</li>
+</ul>
+<h2 id="environment-notes">Environment Notes<a class="headerlink" href="#environment-notes" title="Permanent link">&para;</a></h2>
+<p>The sound ingestion scripts are now env-only for the xeno-canto key:</p>
+<ul>
+<li><code>XENO_CANTO_API_KEY</code></li>
+</ul>
+<p>Recommended <code>.env</code> form:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>XENO_CANTO_API_KEY=your_key_here
+</code></pre></div>
+<p>Avoid wrapping the value in quotes.</p>
+<h2 id="operational-warning">Operational Warning<a class="headerlink" href="#operational-warning" title="Permanent link">&para;</a></h2>
+<p>Do not run the bird text-data loop and the sound-ingestion loop at the same time.</p>
+<p>Both write to:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/birds.db">birds.db</a></li>
+</ul>
+<p>Because SQLite allows only one writer at a time, running both loops together can trigger:</p>
+<ul>
+<li><code>database is locked</code></li>
+</ul>
+<h2 id="retrieval-layer">Retrieval Layer<a class="headerlink" href="#retrieval-layer" title="Permanent link">&para;</a></h2>
+<p>Current retrieval is metadata-first in:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/sound_rag.py">sound_rag.py</a></li>
+</ul>
+<p>It currently matches on:</p>
+<ul>
+<li>species</li>
+<li><code>song</code> vs <code>call</code></li>
+<li>quality</li>
+<li>country</li>
+<li>location</li>
+<li>remarks</li>
+<li>background species</li>
+</ul>
+<p>Future versions can still add embeddings over:</p>
+<ul>
+<li><code>remarks</code></li>
+<li><code>background_species</code></li>
+<li><code>recording_type</code></li>
+</ul>
+<h2 id="training-dataset-shape">Training Dataset Shape<a class="headerlink" href="#training-dataset-shape" title="Permanent link">&para;</a></h2>
+<p>Expected structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sound-training/
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  1/
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    species.json
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    sound_training_manifest.json
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    definitive_sound_manifest.json
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    song/
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>      robin_song.mp3
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    call/
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>      robin_call.mp3
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    definitive/
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>      Robin.mp3
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    song/
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>      robin__xc_123456.mp3
+</code></pre></div>
+<p>Each species folder is keyed by <code>bird_species.id</code>.</p>
+<p>The trainer treats these directories as follows:</p>
+<ul>
+<li><code>song</code> -&gt; song</li>
+<li><code>call</code> -&gt; call</li>
+<li><code>definitive</code> -&gt; song-like training data</li>
+<li><code>training_song</code> rows are exported into <code>song</code>-like training coverage through the dataset prep flow</li>
+</ul>
+<h2 id="recommended-storage-pattern">Recommended Storage Pattern<a class="headerlink" href="#recommended-storage-pattern" title="Permanent link">&para;</a></h2>
+<p>To avoid filling local disk, the current recommended setup is:</p>
+<ul>
+<li>keep the small canonical app playback files local if needed</li>
+<li>store the larger training-oriented sound inventory on the Windows network share</li>
+</ul>
+<p>Recommended network paths:</p>
+<ul>
+<li><code>/Volumes/DATA/birds/species/sounds</code></li>
+<li><code>/Volumes/DATA/sound-training</code></li>
+<li><code>/Volumes/DATA/sound-training-all</code></li>
+</ul>
+<p>Typical workflow:</p>
+<ol>
+<li>xeno-canto top-up into <code>/Volumes/DATA/birds/species/sounds</code></li>
+<li>optional Commons import into <code>/Volumes/DATA/birds/species/sounds</code></li>
+<li>rebuild training dataset into <code>/Volumes/DATA/sound-training-all</code></li>
+<li>add Dropbox definitive MP3 files into <code>/Volumes/DATA/sound-training-all</code></li>
+<li>train from <code>/Volumes/DATA/sound-training-all</code></li>
+</ol>
+<h2 id="current-status">Current Status<a class="headerlink" href="#current-status" title="Permanent link">&para;</a></h2>
+<p>What is already in place:</p>
+<ul>
+<li>xeno-canto ingestion</li>
+<li>canonical song/call sync into <code>bird_species</code></li>
+<li>metadata-first retrieval</li>
+<li>app playback</li>
+<li>species-labeled sound-training dataset generation</li>
+<li>Dropbox <code>Definitive MP3</code> import into the training dataset</li>
+<li>first-pass sound-classifier training</li>
+<li>saved sound model artifact</li>
+</ul>
+<p>What is not yet in place:</p>
+<ul>
+<li>backend sound inference helper</li>
+<li><code>POST /identify-bird-sound</code></li>
+<li>app-side sound identification flow</li>
+</ul>
+<h2 id="selection-rules">Selection Rules<a class="headerlink" href="#selection-rules" title="Permanent link">&para;</a></h2>
+<p>Current default ranking rules:</p>
+<ol>
+<li>prefer scientific-name matches over broad common-name matches</li>
+<li>prefer permissive licenses over restrictive ones</li>
+<li>prefer quality <code>A</code>, then <code>B</code></li>
+<li>prefer clean <code>song</code> for <code>song_audio_url</code></li>
+<li>prefer clean <code>call</code>, <code>alarm call</code>, or <code>flight call</code> for <code>call_audio_url</code></li>
+<li>reject obvious duplicates</li>
+<li>reject soundscapes unless they are the only reasonable candidate</li>
+</ol>
+<h2 id="why-this-is-not-pure-rag-yet">Why This Is Not Pure RAG Yet<a class="headerlink" href="#why-this-is-not-pure-rag-yet" title="Permanent link">&para;</a></h2>
+<p>The first job is ingestion and normalization:</p>
+<ul>
+<li>find recordings</li>
+<li>store them safely</li>
+<li>keep source metadata</li>
+</ul>
+<p>RAG becomes useful after that:</p>
+<ul>
+<li>retrieve the best sound examples</li>
+<li>answer sound-focused questions</li>
+<li>explain why a clip is a good match</li>
+</ul>
+<p>The current implementation order has become:</p>
+<ol>
+<li>source ingestion</li>
+<li>metadata table</li>
+<li>selected file mapping</li>
+<li>metadata backfill</li>
+<li>retrieval</li>
+<li>optional LLM answer generation</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../image-ingestion-pipeline/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Image Ingestion">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Image Ingestion
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../sound-training-curation-flow/" class="md-footer__link md-footer__link--next" aria-label="Next: Sound Training Curation">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Sound Training Curation
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

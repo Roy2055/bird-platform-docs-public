@@ -1,0 +1,3675 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production architecture, AI/ML, data, API, and mobile engineering documentation for Spark Birds.">
+      
+      
+        <meta name="author" content="Delroy Peters">
+      
+      
+        <link rel="canonical" href="https://roy2055.github.io/bird-platform-docs-public/backend/">
+      
+      
+        <link rel="prev" href="../nearby-bird-alerts-architecture/">
+      
+      
+        <link rel="next" href="../data-flow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Backend Overview - Spark Birds Technical Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#backend-overview" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Spark Birds Technical Documentation" class="md-header__button md-logo" aria-label="Spark Birds Technical Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 11.5-3.05-1.13c-.26-1.15-.91-1.81-.91-1.81a4.19 4.19 0 0 0-5.93 0l-1.48 1.48L5 3c-1 4 0 8 2.45 11.22L2 19.5s8.89 2 14.07-2.05c2.76-2.16 3.38-3.42 3.77-4.75zm-5.29.22c-.39.39-1.03.39-1.42 0a.996.996 0 0 1 0-1.41c.39-.39 1.03-.39 1.42 0s.39 1.02 0 1.41"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Spark Birds Technical Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Backend Overview
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="green" data-md-color-accent="light-green"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href=".." class="md-tabs__link">
+          
+  
+  
+  Home
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../architecture/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../rag-pipeline/" class="md-tabs__link">
+          
+  
+  
+  AI And Machine Learning
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../frontend/" class="md-tabs__link">
+          
+  
+  
+  Product Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../api/" class="md-tabs__link">
+          
+  
+  
+  API
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../database/" class="md-tabs__link">
+          
+  
+  
+  Data
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../setup/" class="md-tabs__link">
+          
+  
+  
+  Engineering
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Spark Birds Technical Documentation" class="md-nav__button md-logo" aria-label="Spark Birds Technical Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m23 11.5-3.05-1.13c-.26-1.15-.91-1.81-.91-1.81a4.19 4.19 0 0 0-5.93 0l-1.48 1.48L5 3c-1 4 0 8 2.45 11.22L2 19.5s8.89 2 14.07-2.05c2.76-2.16 3.38-3.42 3.77-4.75zm-5.29.22c-.39.39-1.03.39-1.42 0a.996.996 0 0 1 0-1.41c.39-.39 1.03-.39 1.42 0s.39 1.02 0 1.41"/></svg>
+
+    </a>
+    Spark Birds Technical Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../product-highlights/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Highlights
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../public-docs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Public Documentation Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Project Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../production-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../nearby-bird-alerts-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nearby Bird Alerts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Overview
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Backend Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#layer-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Responsibilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer Responsibilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-entry-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Entry Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-module-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Module Layout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Module Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-and-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core and Bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-demarcation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Demarcation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-domain-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Domain Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#species" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Species
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Predictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moderation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moderation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promotions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Promotions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nearby-bird-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearby Bird Alerts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-likelihood-data-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 Likelihood Data Engineering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-transport-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Transport Packages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-and-request-flow-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function and Request Flow Diagram
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function and Request Flow Diagram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-level-function-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain-Level Function Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup-and-lifespan-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup and Lifespan Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Important Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-and-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth and System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#species-and-qa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Species and Q&amp;A
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Predictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feedback-and-moderation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feedback and Moderation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-and-retrieval-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI and Retrieval Responsibilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI and Retrieval Responsibilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bird-image-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bird Image Inference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bird-qa-and-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bird Q&amp;A and Retrieval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moderation-ai-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moderation AI Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#media-and-cleanup-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media and Cleanup Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-test-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Test Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-layer-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Each Layer Covers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Test Harness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Full Test Harness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-import-bootstrap-and-environment-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Import bootstrap and environment isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-router-test-utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Router test utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-service-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Service harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-repository-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Repository harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-app-composition-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. App composition harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-verified-test-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Verified Test Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-outcome-of-the-refactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Outcome of the Refactor
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Flow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authentication
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moderation-process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Moderation Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AI And Machine Learning
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AI And Machine Learning
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../rag-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Q&A RAG Pipeline
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../artifacts-embeddings-and-classification/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Artifacts, Embeddings, And Classification
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bird-data-collection-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Data Collection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../image-ingestion-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image Ingestion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sound-ingestion-pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Ingestion And Training
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sound-training-curation-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sound Training Curation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bird-likelihood/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contextual Bird Likelihood
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Product Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Product Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend App
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../admin-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Admin Web
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-navigation-and-core-screens/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Navigation And Core Screens
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-bird-detail-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Bird Detail View
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-prediction-create-and-update/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Prediction Create And Update
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ui-map-analytics-and-community/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Analytics And Community
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../components/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    UI Components
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design-colors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Design Colors
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/predictions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Predictions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/bird-species/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bird Species
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/uploads/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Uploads
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Data
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../database/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Database Schema
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Engineering
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Engineering
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Commit Guide
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../git-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Git Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#layer-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer Responsibilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Layer Responsibilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#router" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Router
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Repository
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-entry-points" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Entry Points
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#current-module-layout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Module Layout
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Current Module Layout">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-and-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core and Bootstrap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-demarcation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Demarcation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-domain-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared Domain Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#auth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#species" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Species
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Predictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moderation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moderation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#promotions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Promotions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nearby-bird-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nearby Bird Alerts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stage-3-likelihood-data-engineering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stage 3 Likelihood Data Engineering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-transport-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Transport Packages
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#function-and-request-flow-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Function and Request Flow Diagram
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Function and Request Flow Diagram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-level-function-diagram" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain-Level Function Diagram
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#startup-and-lifespan-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Startup and Lifespan Flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#important-endpoints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Important Endpoints
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Important Endpoints">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#auth-and-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auth and System
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#species-and-qa" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Species and Q&amp;A
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#predictions_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Predictions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#community_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Community
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feedback-and-moderation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feedback and Moderation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#media" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-and-retrieval-responsibilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI and Retrieval Responsibilities
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI and Retrieval Responsibilities">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bird-image-inference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bird Image Inference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bird-qa-and-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bird Q&amp;A and Retrieval
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#moderation-ai-support" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Moderation AI Support
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#media-and-cleanup-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Media and Cleanup Strategy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Testing Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Testing Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#test-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test Layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-test-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Test Files
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-layer-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Each Layer Covers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-test-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Full Test Harness
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Full Test Harness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-import-bootstrap-and-environment-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Import bootstrap and environment isolation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-router-test-utility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Router test utility
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-service-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Service harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-repository-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Repository harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-app-composition-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. App composition harness
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#current-verified-test-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Current Verified Test Command
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#practical-outcome-of-the-refactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Practical Outcome of the Refactor
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="backend-overview">Backend Overview<a class="headerlink" href="#backend-overview" title="Permanent link">&para;</a></h1>
+<p>The backend lives in <code>bird-agent/</code> and now follows a much cleaner FastAPI structure than the earlier single-file <code>main.py</code> design.</p>
+<p>The important architectural shift is:</p>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/main.py">bird-agent/main.py</a> is now a thin ASGI entrypoint</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/app_factory.py">bird-agent/app_factory.py</a> is the application composition root</li>
+<li>HTTP transport is split into routers by domain</li>
+<li>business workflow is split into service modules</li>
+<li>SQL access is split into repository modules</li>
+<li>database bootstrap/schema/migration logic is split out of the web entrypoint</li>
+</ul>
+<p>That means the backend now more closely follows the industry-standard Python layering:</p>
+<ul>
+<li><code>router -&gt; service -&gt; repository</code></li>
+<li><code>app_factory -&gt; startup/lifespan orchestration</code></li>
+<li><code>core -&gt; config/constants/paths</code></li>
+<li><code>app_db -&gt; connection/schema/migrations/bootstrap</code></li>
+</ul>
+<h2 id="layer-responsibilities">Layer Responsibilities<a class="headerlink" href="#layer-responsibilities" title="Permanent link">&para;</a></h2>
+<p>The backend layers are intentionally strict.</p>
+<h3 id="router">Router<a class="headerlink" href="#router" title="Permanent link">&para;</a></h3>
+<p>Router modules are HTTP-only.</p>
+<p>Their responsibilities are:</p>
+<ul>
+<li>request params</li>
+<li>auth dependency application</li>
+<li>response shape</li>
+<li>request model parsing through FastAPI/Pydantic</li>
+<li>handing off work to the service layer</li>
+</ul>
+<p>Router modules should not own:</p>
+<ul>
+<li>SQL</li>
+<li>workflow state transitions</li>
+<li>transaction orchestration</li>
+<li>non-trivial domain rules</li>
+</ul>
+<h3 id="service">Service<a class="headerlink" href="#service" title="Permanent link">&para;</a></h3>
+<p>Service modules own business behavior.</p>
+<p>Their responsibilities are:</p>
+<ul>
+<li>business rules</li>
+<li>validation flow</li>
+<li>workflow transitions</li>
+<li>transaction orchestration</li>
+<li>deciding which repository calls happen and in what order</li>
+<li>coordinating shared helpers such as serializers, moderation helpers, and media cleanup</li>
+</ul>
+<p>Service modules should not own:</p>
+<ul>
+<li>raw SQL strings</li>
+<li>route decorators</li>
+<li>FastAPI dependency declarations</li>
+</ul>
+<h3 id="repository">Repository<a class="headerlink" href="#repository" title="Permanent link">&para;</a></h3>
+<p>Repository modules are persistence-only.</p>
+<p>Their responsibilities are:</p>
+<ul>
+<li>SQL only</li>
+<li>fetch rows</li>
+<li>update rows</li>
+<li>insert rows</li>
+<li>delete rows</li>
+<li>aggregate queries</li>
+<li>join queries</li>
+</ul>
+<p>Repository modules should not own:</p>
+<ul>
+<li>FastAPI concerns</li>
+<li><code>HTTPException</code></li>
+<li>auth logic</li>
+<li>moderation workflow rules</li>
+<li>prediction/community business decisions</li>
+</ul>
+<p>This separation is now the core design rule for new backend work.</p>
+<h2 id="current-entry-points">Current Entry Points<a class="headerlink" href="#current-entry-points" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/main.py">bird-agent/main.py</a>
+  now only exposes <code>app = create_app()</code></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/app_factory.py">bird-agent/app_factory.py</a>
+  builds the FastAPI app, mounts static files, includes routers, and runs lifecycle startup through a FastAPI lifespan function</li>
+</ul>
+<h2 id="current-module-layout">Current Module Layout<a class="headerlink" href="#current-module-layout" title="Permanent link">&para;</a></h2>
+<h3 id="core-and-bootstrap">Core and Bootstrap<a class="headerlink" href="#core-and-bootstrap" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/core/config.py">bird-agent/core/config.py</a>
+  environment loading and runtime flags</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/core/paths.py">bird-agent/core/paths.py</a>
+  local filesystem paths and upload directories</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/app_db/connection.py">bird-agent/app_db/connection.py</a>
+  SQLite/Postgres compatibility connection factory</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/app_db/schema.py">bird-agent/app_db/schema.py</a>
+  base table creation</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/app_db/migrations.py">bird-agent/app_db/migrations.py</a>
+  schema evolution and data backfills</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/app_db/bootstrap.py">bird-agent/app_db/bootstrap.py</a>
+  startup database initialization orchestration</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/alembic-main-app.ini">bird-agent/alembic-main-app.ini</a>
+  Alembic config for the primary app PostgreSQL database</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/alembic_main_app">bird-agent/alembic_main_app</a>
+  versioned migrations for the primary app PostgreSQL database</li>
+</ul>
+<h3 id="database-demarcation">Database Demarcation<a class="headerlink" href="#database-demarcation" title="Permanent link">&para;</a></h3>
+<p>The repo now has two distinct Alembic migration trees and they do not own the same database.</p>
+<ol>
+<li>Main app database</li>
+<li>env var: <code>DATABASE_URL</code></li>
+<li>production database name is typically <code>bird_platform</code></li>
+<li>owns tables such as <code>users</code>, <code>bird_species</code>, <code>predictions</code>, <code>community_reports</code>, <code>user_feedback</code>, and <code>trust_safety_actions</code></li>
+<li>
+<p>Alembic config:</p>
+<ul>
+<li><code>bird-agent/alembic-main-app.ini</code></li>
+<li><code>bird-agent/alembic_main_app/</code></li>
+</ul>
+</li>
+<li>
+<p>Nearby alerts database</p>
+</li>
+<li>env vars:<ul>
+<li><code>BIRD_ALERTS_DATABASE_URL</code></li>
+<li><code>BIRD_ALERTS_DATABASE_URL_SYNC</code></li>
+</ul>
+</li>
+<li>production database name is typically <code>birdagent</code></li>
+<li>owns the nearby-alert scheduling/user tables only</li>
+<li>Alembic config:<ul>
+<li><code>bird-agent/alembic-nearby-bird-alerts.ini</code></li>
+<li><code>bird-agent/alembic_nearby_bird_alerts/</code></li>
+</ul>
+</li>
+</ol>
+<p>Operational rule:</p>
+<ul>
+<li>schema changes in the main product tables should go through the main-app Alembic tree</li>
+<li>schema changes in nearby-alerts tables should go through the nearby-alerts Alembic tree</li>
+<li>runtime bootstrap helpers in <code>app_db/schema.py</code> and <code>app_db/migrations.py</code> remain useful reference code, but production PostgreSQL schema evolution should now be handled through Alembic</li>
+</ul>
+<h3 id="shared-domain-support">Shared Domain Support<a class="headerlink" href="#shared-domain-support" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/api_models.py">bird-agent/api_models.py</a>
+  shared Pydantic request models</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/serializers.py">bird-agent/serializers.py</a>
+  shared row-to-response formatting and validation helpers</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/media.py">bird-agent/media.py</a>
+  Firebase/GCS media resolution, upload helpers, and admin bootstrap</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/media_cleanup_helpers.py">bird-agent/media_cleanup_helpers.py</a>
+  prediction/account media cleanup helpers</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/rag.py">bird-agent/rag.py</a>
+  retrieval, embedding, and bird Q&amp;A provider orchestration</li>
+</ul>
+<h3 id="auth">Auth<a class="headerlink" href="#auth" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/auth/dependencies.py">bird-agent/auth/dependencies.py</a>
+  FastAPI auth guards</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/auth/service.py">bird-agent/auth/service.py</a>
+  Firebase token verification and local user synchronization</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/auth/email.py">bird-agent/auth/email.py</a>
+  verification/password reset email helpers</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/auth/router.py">bird-agent/auth/router.py</a>
+  auth/account HTTP endpoints</li>
+</ul>
+<h3 id="species">Species<a class="headerlink" href="#species" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/species/repository.py">bird-agent/species/repository.py</a>
+  species lookups and gallery SQL</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/species/service.py">bird-agent/species/service.py</a>
+  response enrichment with gallery items</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/species/router.py">bird-agent/species/router.py</a>
+  species and admin species HTTP routes</li>
+</ul>
+<h3 id="predictions">Predictions<a class="headerlink" href="#predictions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/predictions/repository.py">bird-agent/predictions/repository.py</a>
+  prediction SQL for create/read/update/share/delete/top lists</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/predictions/service.py">bird-agent/predictions/service.py</a>
+  owner-facing prediction workflows</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/predictions/router.py">bird-agent/predictions/router.py</a>
+  prediction HTTP routes</li>
+</ul>
+<h3 id="community">Community<a class="headerlink" href="#community" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/community/repository.py">bird-agent/community/repository.py</a>
+  community feed, ratings, reactions, comments, reports, and block SQL</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/community/service.py">bird-agent/community/service.py</a>
+  feed pagination, reaction toggle logic, and reporting workflows</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/community/helpers.py">bird-agent/community/helpers.py</a>
+  block-relationship helper</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/community/router.py">bird-agent/community/router.py</a>
+  community HTTP routes</li>
+</ul>
+<h3 id="feedback">Feedback<a class="headerlink" href="#feedback" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/feedback/repository.py">bird-agent/feedback/repository.py</a>
+  feedback ticket/message SQL</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/feedback/service.py">bird-agent/feedback/service.py</a>
+  user/admin support ticket workflows</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/feedback/helpers.py">bird-agent/feedback/helpers.py</a>
+  threaded feedback serialization</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/feedback/router.py">bird-agent/feedback/router.py</a>
+  feedback HTTP routes</li>
+</ul>
+<h3 id="moderation">Moderation<a class="headerlink" href="#moderation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/repository.py">bird-agent/moderation/repository.py</a>
+  moderation update and trust-safety SQL helpers</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/service.py">bird-agent/moderation/service.py</a>
+  moderation workflow/state-transition logic</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/helpers.py">bird-agent/moderation/helpers.py</a>
+  severity classification, trust-safety actions, and signal logging</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/sla.py">bird-agent/moderation/sla.py</a>
+  SLA, report stage, and feedback/report normalization logic</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/queries.py">bird-agent/moderation/queries.py</a>
+  report retrieval and serialization queries</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/router.py">bird-agent/moderation/router.py</a>
+  moderation/admin HTTP routes</li>
+</ul>
+<h3 id="promotions">Promotions<a class="headerlink" href="#promotions" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/promotions/repository.py">bird-agent/promotions/repository.py</a>
+  promotion SQL, admin CRUD persistence, and per-user promotion state updates</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/promotions/service.py">bird-agent/promotions/service.py</a>
+  promotion eligibility logic, timing resolution, serialization, and admin CRUD orchestration</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/promotions/router.py">bird-agent/promotions/router.py</a>
+  app-facing and admin-facing promotion HTTP routes</li>
+</ul>
+<h3 id="nearby-bird-alerts">Nearby Bird Alerts<a class="headerlink" href="#nearby-bird-alerts" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>bird-agent/nearby_bird_alerts/tasks.py</code>
+  clustered lookup scheduling, species-difference processing, and due outbox delivery</li>
+<li><code>bird-agent/nearby_bird_alerts/outbox.py</code>
+  versioned payload serialization and deterministic email deduplication keys</li>
+<li><code>bird-agent/nearby_bird_alerts/notifications.py</code>
+  push, email, and webhook channel adapters with provider-result classification</li>
+</ul>
+<p>The nearby-alert path separates durable discovery state from email-provider
+delivery. Newly discovered species are recorded once, email work is enqueued
+with a unique deduplication key, and retryable failures remain eligible for a
+later worker pass.</p>
+<h3 id="stage-3-likelihood-data-engineering">Stage 3 Likelihood Data Engineering<a class="headerlink" href="#stage-3-likelihood-data-engineering" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>bird-agent/likelihood/stage3_ebd_backfill.py</code>
+  complete-checklist cohort selection, ecological evidence queries, stratified
+  hard-negative sampling, feature materialization, and resumable checkpoints</li>
+<li><code>bird-agent/scripts/backfill_bird_likelihood_stage3_from_ebd.py</code>
+  reproducible CLI controls and phase-level execution summaries</li>
+</ul>
+<p>The backfill contract selects whole checklists through deterministic hash
+buckets. It commits at checklist boundaries so interrupted runs can skip
+fully completed events without creating partial label groups.</p>
+<h3 id="api-transport-packages">API Transport Packages<a class="headerlink" href="#api-transport-packages" title="Permanent link">&para;</a></h3>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/rag_api/router.py">bird-agent/rag_api/router.py</a>
+  bird Q&amp;A and RAG rebuild endpoints</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/media_api/router.py">bird-agent/media_api/router.py</a>
+  image/audio upload and bird-image identification endpoints</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/system_api/router.py">bird-agent/system_api/router.py</a>
+  root and health endpoints</li>
+</ul>
+<h2 id="function-and-request-flow-diagram">Function and Request Flow Diagram<a class="headerlink" href="#function-and-request-flow-diagram" title="Permanent link">&para;</a></h2>
+<p>The backend function flow now looks like this:</p>
+<pre class="mermaid"><code>flowchart TD
+    A["HTTP request"] --&gt; B["Router module&lt;br/&gt;auth/species/predictions/community/feedback/moderation/media_api/rag_api/system_api"]
+    B --&gt; C["Auth dependency&lt;br/&gt;get_current_user / get_current_registered_user / get_current_admin_user"]
+    B --&gt; D["Service module&lt;br/&gt;workflow + orchestration"]
+    D --&gt; E["Repository module&lt;br/&gt;SQL only"]
+    E --&gt; F["DB connection&lt;br/&gt;app_db.connection.get_connection"]
+    D --&gt; G["Shared helpers&lt;br/&gt;serializers / media / moderation.helpers / species.service"]
+    G --&gt; H["External systems&lt;br/&gt;Firebase / Firestore / GCS / AI inference / RAG providers"]
+    F --&gt; I["SQLite or PostgresCompat"]</code></pre>
+<h3 id="domain-level-function-diagram">Domain-Level Function Diagram<a class="headerlink" href="#domain-level-function-diagram" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    subgraph Boot["Application Boot"]
+        M["main.py"] --&gt; AF["app_factory.create_app()"]
+        AF --&gt; LS["app_lifespan()"]
+        LS --&gt; DBI["initialize_database_if_needed()"]
+        LS --&gt; RAGW["RAG warmup"]
+        LS --&gt; DETOX["Detoxify prewarm"]
+    end
+
+    subgraph AuthDomain["Auth Domain"]
+        AR["auth.router"] --&gt; AD["auth.dependencies"]
+        AD --&gt; AS["auth.service"]
+        AR --&gt; AE["auth.email"]
+    end
+
+    subgraph PredictionDomain["Prediction Domain"]
+        PR["predictions.router"] --&gt; PS["predictions.service"]
+        PS --&gt; PREPO["predictions.repository"]
+        PS --&gt; SS["species.service"]
+        PS --&gt; MCH["media_cleanup_helpers"]
+    end
+
+    subgraph CommunityDomain["Community Domain"]
+        CR["community.router"] --&gt; CS["community.service"]
+        CS --&gt; CREPO["community.repository"]
+        CS --&gt; MH["moderation.helpers"]
+    end
+
+    subgraph FeedbackDomain["Feedback Domain"]
+        FR["feedback.router"] --&gt; FS["feedback.service"]
+        FS --&gt; FREPO["feedback.repository"]
+        FS --&gt; FHELP["feedback.helpers"]
+        FS --&gt; SLA["moderation.sla"]
+    end
+
+    subgraph ModerationDomain["Moderation Domain"]
+        MR["moderation.router"] --&gt; MS["moderation.service"]
+        MS --&gt; MREPO["moderation.repository"]
+        MS --&gt; MQ["moderation.queries"]
+        MS --&gt; MH2["moderation.helpers"]
+        MS --&gt; SLA2["moderation.sla"]
+    end
+
+    subgraph SpeciesDomain["Species and Search"]
+        SR["species.router"] --&gt; SS2["species.service"]
+        SS2 --&gt; SREPO["species.repository"]
+        RR["rag_api.router"] --&gt; RAG["rag.py"]
+    end</code></pre>
+<h2 id="startup-and-lifespan-flow">Startup and Lifespan Flow<a class="headerlink" href="#startup-and-lifespan-flow" title="Permanent link">&para;</a></h2>
+<p>The backend no longer uses the deprecated <code>@app.on_event("startup")</code> model. It now uses a FastAPI lifespan function.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Main as main.py
+    participant Factory as app_factory.create_app
+    participant Life as app_lifespan
+    participant DB as app_db.bootstrap
+    participant Media as media.py
+    participant RAG as rag.py
+    participant Detox as moderation.helpers
+
+    Main-&gt;&gt;Factory: create_app()
+    Factory-&gt;&gt;Life: register lifespan
+    Life-&gt;&gt;DB: initialize_database_if_needed(...)
+    Life-&gt;&gt;Media: get_firebase_bucket()
+    Life-&gt;&gt;RAG: prewarm_local_semantic_cache(...)
+    Life-&gt;&gt;RAG: warmup_ollama_chat_model()
+    Life-&gt;&gt;Detox: get_detoxify_model()
+    Life--&gt;&gt;Factory: yield app runtime</code></pre>
+<h2 id="important-endpoints">Important Endpoints<a class="headerlink" href="#important-endpoints" title="Permanent link">&para;</a></h2>
+<h3 id="auth-and-system">Auth and System<a class="headerlink" href="#auth-and-system" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>POST /token</code></li>
+<li><code>DELETE /auth/account</code></li>
+<li><code>GET /</code></li>
+<li><code>GET /health</code></li>
+</ul>
+<h3 id="species-and-qa">Species and Q&amp;A<a class="headerlink" href="#species-and-qa" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>GET /bird-list</code></li>
+<li><code>GET /bird-species</code></li>
+<li><code>GET /bird-species/{id}</code></li>
+<li><code>GET /bird-search</code></li>
+<li><code>POST /bird-questions/ask</code></li>
+<li><code>POST /bird-species-rag/rebuild</code></li>
+</ul>
+<h3 id="predictions_1">Predictions<a class="headerlink" href="#predictions_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>GET /predictions</code></li>
+<li><code>GET /predictions/{id}</code></li>
+<li><code>POST /predictions</code></li>
+<li><code>PUT /predictions/{id}</code></li>
+<li><code>POST /predictions/{id}/community</code></li>
+<li><code>DELETE /predictions/{id}/community</code></li>
+<li><code>DELETE /predictions/{id}</code></li>
+<li><code>GET /stats/top-predictions</code></li>
+</ul>
+<h3 id="community_1">Community<a class="headerlink" href="#community_1" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>GET /community-predictions</code></li>
+<li><code>GET /community-predictions/{prediction_id}</code></li>
+<li><code>POST /community-predictions/{prediction_id}/rating</code></li>
+<li><code>POST /community-predictions/{prediction_id}/reaction</code></li>
+<li><code>GET /community-predictions/{prediction_id}/comments</code></li>
+<li><code>POST /community-predictions/{prediction_id}/comments</code></li>
+<li><code>POST /community-predictions/{prediction_id}/report</code></li>
+<li><code>POST /community-comments/{comment_id}/report</code></li>
+<li><code>POST /community-users/{user_id}/report</code></li>
+<li><code>POST /community-users/{user_id}/block</code></li>
+</ul>
+<h3 id="feedback-and-moderation">Feedback and Moderation<a class="headerlink" href="#feedback-and-moderation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>GET /feedback</code></li>
+<li><code>POST /feedback</code></li>
+<li><code>POST /feedback/{feedback_id}/messages</code></li>
+<li><code>PATCH /feedback/{feedback_id}/resolve</code></li>
+<li><code>GET /community-reports/mine</code></li>
+<li><code>PATCH /community-reports/{report_id}/response</code></li>
+<li><code>GET /admin/feedback</code></li>
+<li><code>PATCH /admin/feedback/{feedback_id}/reply</code></li>
+<li><code>PATCH /admin/feedback/{feedback_id}/status</code></li>
+<li><code>GET /admin/community-reports</code></li>
+<li><code>PATCH /admin/community-reports/{report_id}</code></li>
+</ul>
+<h3 id="media">Media<a class="headerlink" href="#media" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>GET /prediction-image-uploads/{upload_id}</code></li>
+<li><code>POST /upload-image</code></li>
+<li><code>POST /upload-sound</code></li>
+<li><code>POST /identify-bird-image</code></li>
+</ul>
+<h2 id="ai-and-retrieval-responsibilities">AI and Retrieval Responsibilities<a class="headerlink" href="#ai-and-retrieval-responsibilities" title="Permanent link">&para;</a></h2>
+<h3 id="bird-image-inference">Bird Image Inference<a class="headerlink" href="#bird-image-inference" title="Permanent link">&para;</a></h3>
+<ul>
+<li>runtime entrypoint:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/media_api/router.py">bird-agent/media_api/router.py</a></li>
+<li>inference engine:</li>
+<li><code>ai/bird_image_identifier.py</code></li>
+</ul>
+<h3 id="bird-qa-and-retrieval">Bird Q&amp;A and Retrieval<a class="headerlink" href="#bird-qa-and-retrieval" title="Permanent link">&para;</a></h3>
+<ul>
+<li>transport:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/rag_api/router.py">bird-agent/rag_api/router.py</a></li>
+<li>provider logic:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/rag.py">bird-agent/rag.py</a></li>
+</ul>
+<p>Current provider strategy:</p>
+<ul>
+<li>retrieval provider:</li>
+<li>local TF-IDF fallback</li>
+<li>optional <code>local-semantic</code></li>
+<li>optional <code>openai</code></li>
+<li>answer provider:</li>
+<li>local summarization fallback</li>
+<li>optional <code>ollama</code></li>
+<li>optional <code>openai</code></li>
+</ul>
+<h3 id="moderation-ai-support">Moderation AI Support<a class="headerlink" href="#moderation-ai-support" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Detoxify-backed severity classification remains isolated in:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/helpers.py">bird-agent/moderation/helpers.py</a></li>
+<li>policy/state/SLA logic remains isolated in:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/moderation/sla.py">bird-agent/moderation/sla.py</a></li>
+</ul>
+<p>That split is intentional:</p>
+<ul>
+<li>model-assisted classification is nondeterministic and may evolve</li>
+<li>report/feedback workflow policy must stay deterministic and auditable</li>
+</ul>
+<h2 id="media-and-cleanup-strategy">Media and Cleanup Strategy<a class="headerlink" href="#media-and-cleanup-strategy" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Firebase/GCS path resolution still lives in <a href="&lt;path-to-bird-platform&gt;/bird-agent/media.py">bird-agent/media.py</a></li>
+<li>prediction/account cleanup helpers now live in <a href="&lt;path-to-bird-platform&gt;/bird-agent/media_cleanup_helpers.py">bird-agent/media_cleanup_helpers.py</a></li>
+<li>prediction deletion and account deletion both use that cleanup layer</li>
+</ul>
+<p>Operationally, this means media cleanup is now a reusable backend concern rather than being duplicated across route handlers.</p>
+<h2 id="testing-structure">Testing Structure<a class="headerlink" href="#testing-structure" title="Permanent link">&para;</a></h2>
+<p>The backend now has a layered test structure under <a href="&lt;path-to-bird-platform&gt;/bird-agent/tests:1">bird-agent/tests</a>.</p>
+<h3 id="test-layers">Test Layers<a class="headerlink" href="#test-layers" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TD
+    A["App composition tests&lt;br/&gt;create_app / lifespan"] --&gt; B["Router/API tests&lt;br/&gt;FastAPI TestClient"]
+    B --&gt; C["Service tests&lt;br/&gt;workflow + business rules"]
+    C --&gt; D["Repository tests&lt;br/&gt;real SQL against in-memory SQLite"]</code></pre>
+<h3 id="current-test-files">Current Test Files<a class="headerlink" href="#current-test-files" title="Permanent link">&para;</a></h3>
+<ul>
+<li>app composition:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_app_factory.py">bird-agent/tests/test_app_factory.py</a></li>
+<li>router/API:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_api_routes.py">bird-agent/tests/test_api_routes.py</a></li>
+<li>service:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_predictions_service.py">bird-agent/tests/test_predictions_service.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_community_service.py">bird-agent/tests/test_community_service.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_feedback_service.py">bird-agent/tests/test_feedback_service.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_moderation_service.py">bird-agent/tests/test_moderation_service.py</a></li>
+<li>repository:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_predictions_repository.py">bird-agent/tests/test_predictions_repository.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_community_repository.py">bird-agent/tests/test_community_repository.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_feedback_repository.py">bird-agent/tests/test_feedback_repository.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_moderation_repository.py">bird-agent/tests/test_moderation_repository.py</a></li>
+<li>shared test utilities:</li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/conftest.py">bird-agent/tests/conftest.py</a></li>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_utils.py">bird-agent/tests/test_utils.py</a></li>
+</ul>
+<h3 id="what-each-layer-covers">What Each Layer Covers<a class="headerlink" href="#what-each-layer-covers" title="Permanent link">&para;</a></h3>
+<ul>
+<li>app composition tests:</li>
+<li>route registration</li>
+<li>middleware registration</li>
+<li>lifespan startup orchestration</li>
+<li>router/API tests:</li>
+<li>HTTP status codes</li>
+<li>dependency overrides</li>
+<li>Pydantic request validation</li>
+<li>router-to-service delegation</li>
+<li>service tests:</li>
+<li>workflow rules</li>
+<li>moderation state transitions</li>
+<li>feedback status movement</li>
+<li>prediction and community behavior</li>
+<li>repository tests:</li>
+<li>real SQL joins</li>
+<li>aggregate calculations</li>
+<li>update/delete behavior</li>
+<li>SQLite-specific edge cases</li>
+</ul>
+<h3 id="full-test-harness">Full Test Harness<a class="headerlink" href="#full-test-harness" title="Permanent link">&para;</a></h3>
+<p>The current backend test harness is made of four cooperating parts:</p>
+<p>In this codebase, the <strong>test harness</strong> means the full supporting test infrastructure around the actual test cases.</p>
+<p>It is not just the <code>test_*.py</code> files.</p>
+<p>It includes:</p>
+<ul>
+<li>the pytest bootstrap and import setup</li>
+<li>fake connections and in-memory databases</li>
+<li>shared <code>TestClient</code> builders</li>
+<li>dependency stubs for Firebase, media, and RAG imports</li>
+<li>the conventions that let router, service, repository, and app-composition tests run reliably and independently</li>
+</ul>
+<p>The purpose of the harness is to give each test layer the right execution environment:</p>
+<ul>
+<li>router tests should feel like HTTP requests, not database tests</li>
+<li>service tests should feel like business-rule tests, not Firebase or SQL integration tests</li>
+<li>repository tests should execute real SQL, but only against small isolated temporary databases</li>
+<li>app-composition tests should verify FastAPI wiring and lifecycle behavior without depending on live cloud services or model runtimes</li>
+</ul>
+<p>So when we say “full test harness,” we mean the reusable Python testing infrastructure that makes the layered suite possible and stable.</p>
+<h4 id="1-import-bootstrap-and-environment-isolation">1. Import bootstrap and environment isolation<a class="headerlink" href="#1-import-bootstrap-and-environment-isolation" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/conftest.py">bird-agent/tests/conftest.py</a></li>
+</ul>
+<p>This file provides:</p>
+<ul>
+<li>project-root path bootstrapping for pytest</li>
+<li>lightweight fake connection objects for service tests</li>
+<li>in-memory SQLite connections for repository tests</li>
+<li>import-time stubs for external dependency chains such as:</li>
+<li><code>media</code></li>
+<li><code>auth.service</code></li>
+<li><code>firebase_admin</code></li>
+<li><code>rag</code></li>
+<li><code>ai.bird_image_identifier</code></li>
+</ul>
+<p>This is important because focused unit tests should validate backend logic, not fail during collection because Firebase, cryptography, or model runtimes are unavailable locally.</p>
+<h4 id="2-router-test-utility">2. Router test utility<a class="headerlink" href="#2-router-test-utility" title="Permanent link">&para;</a></h4>
+<ul>
+<li><a href="&lt;path-to-bird-platform&gt;/bird-agent/tests/test_utils.py">bird-agent/tests/test_utils.py</a></li>
+</ul>
+<p>This utility provides a reusable <code>FastAPI + TestClient</code> wrapper for router tests, including dependency overrides. It keeps API tests small and consistent.</p>
+<h4 id="3-service-harness">3. Service harness<a class="headerlink" href="#3-service-harness" title="Permanent link">&para;</a></h4>
+<p>Service tests use:</p>
+<ul>
+<li>fake connection objects</li>
+<li>monkeypatched repository calls</li>
+<li>monkeypatched helper functions</li>
+</ul>
+<p>This lets the tests verify:</p>
+<ul>
+<li>validation flow</li>
+<li>workflow branching</li>
+<li>transaction boundaries</li>
+<li>side-effect orchestration</li>
+</ul>
+<p>without depending on a real database.</p>
+<h4 id="4-repository-harness">4. Repository harness<a class="headerlink" href="#4-repository-harness" title="Permanent link">&para;</a></h4>
+<p>Repository tests use:</p>
+<ul>
+<li>temporary in-memory SQLite databases</li>
+<li>minimal per-test schema setup</li>
+<li>real SQL execution through the repository functions</li>
+</ul>
+<p>This lets the tests verify:</p>
+<ul>
+<li>query correctness</li>
+<li>join behavior</li>
+<li>aggregate behavior</li>
+<li>update/delete semantics</li>
+<li>SQLite-specific edge cases such as <code>INSERT OR IGNORE</code> and <code>lastrowid</code></li>
+</ul>
+<h4 id="5-app-composition-harness">5. App composition harness<a class="headerlink" href="#5-app-composition-harness" title="Permanent link">&para;</a></h4>
+<p>App composition tests use:</p>
+<ul>
+<li><code>TestClient(create_app())</code></li>
+<li>monkeypatched startup collaborators</li>
+<li>import-time stubs for Firebase/media/RAG dependencies</li>
+</ul>
+<p>This verifies:</p>
+<ul>
+<li>route registration</li>
+<li>middleware registration</li>
+<li>startup/lifespan orchestration</li>
+<li>app-level wiring independent of individual endpoint behavior</li>
+</ul>
+<h3 id="current-verified-test-command">Current Verified Test Command<a class="headerlink" href="#current-verified-test-command" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>.venv/bin/pytest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>tests/test_app_factory.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>tests/test_api_routes.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>tests/test_predictions_service.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>tests/test_community_service.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span>tests/test_feedback_service.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span>tests/test_moderation_service.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span>tests/test_predictions_repository.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span>tests/test_community_repository.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span>tests/test_feedback_repository.py<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span>tests/test_moderation_repository.py
+</code></pre></div>
+<p>Current result after the refactor:</p>
+<ul>
+<li><code>25 passed</code></li>
+</ul>
+<h2 id="practical-outcome-of-the-refactor">Practical Outcome of the Refactor<a class="headerlink" href="#practical-outcome-of-the-refactor" title="Permanent link">&para;</a></h2>
+<p>The backend is no longer a single giant script-style application file.</p>
+<p>It now has:</p>
+<ul>
+<li>a thin ASGI entrypoint</li>
+<li>an app factory with lifespan-managed startup</li>
+<li>domain routers</li>
+<li>service orchestration modules</li>
+<li>repository-backed SQL boundaries</li>
+<li>layered tests for composition, HTTP, workflow, and SQL</li>
+</ul>
+<p>That is a materially better Python backend foundation for future work such as:</p>
+<ul>
+<li>deeper Postgres migration</li>
+<li>more AI providers</li>
+<li>background job extraction</li>
+<li>stricter moderation workflows</li>
+<li>fuller admin tooling</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../nearby-bird-alerts-architecture/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Nearby Bird Alerts">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Nearby Bird Alerts
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../data-flow/" class="md-footer__link md-footer__link--next" aria-label="Next: Data Flow">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Data Flow
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
